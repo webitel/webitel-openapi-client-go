@@ -1,0 +1,52 @@
+run:
+  timeout: 10m
+
+linters:
+  disable-all: true
+  enable:
+    - "bodyclose"
+    - "depguard"
+    - "dogsled"
+    - "errcheck"
+    - "gochecknoinits"
+    - "goconst"
+    - "gocritic"
+    - "goimports"
+    - "goprintffuncname"
+    - "gosec"
+    - "gosimple"
+    - "govet"
+    - "ineffassign"
+    - "misspell"
+    - "nakedret"
+    - "rowserrcheck"
+    - "exportloopref"
+    - "staticcheck"
+    - "stylecheck"
+    - "typecheck"
+    - "unconvert"
+    - "unused"
+    - "whitespace"
+    - "gocyclo"
+    - "unparam"
+
+linters-settings:
+  goconst:
+    min-len: 5
+    min-occurrences: 5
+
+  depguard:
+    rules:
+      main:
+        allow:
+          - "fmt"
+          - "strconv"
+          - "time"
+          - "net/http"
+          - "bytes"
+          - "io"
+          - "math"
+          - "github.com/go-openapi/runtime"
+          - "github.com/grafana/grafana-openapi-client-go/transport"
+
+

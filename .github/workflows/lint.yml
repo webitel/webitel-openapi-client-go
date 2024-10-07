@@ -1,0 +1,34 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  security-events: write
+
+jobs:
+  check-drift:
+    name: Check generated code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Generate client
+        run: make generate-client
+
+      - name: Check diff
+        run: if [[ -n $(git status --porcelain) ]]; then echo "Please update the client using make generate-client"; exit 1; fi
+
+  lint:
+    name: Linting
+    uses: webitel/webitel-wfm/.github/workflows/lint.yml@main
+    needs: check-drift
