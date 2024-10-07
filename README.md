@@ -71,4 +71,8 @@ cfg := &goapi.TransportConfig{
 client := goapi.NewHTTPClientWithConfig(strfmt.Default, cfg)
 ```
 
+### Examples
+
+Checkout how the Webitel Terraform Provider initialises and uses the client [here](https://github.com/webitel/terraform-provider-webitel/blob/7eedb7d12107377d3c20922887a183aede56a47e/internal/provider/provider.go#L140-L172).
+
 The `goswagger` documentation have more information about how to [build a client](https://goswagger.io/go-swagger/generate/client/).
