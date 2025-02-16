@@ -20,7 +20,7 @@ import (
 type WfmExecuteForecastCalculationResponse struct {
 
 	// items
-	Items []*ExecuteForecastCalculationResponseForecast `json:"items"`
+	Items []*WfmExecuteForecastCalculationResponseForecast `json:"items"`
 }
 
 // Validate validates this wfm execute forecast calculation response

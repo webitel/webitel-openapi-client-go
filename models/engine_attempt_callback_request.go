@@ -38,6 +38,9 @@ type EngineAttemptCallbackRequest struct {
 	// min offering at
 	MinOfferingAt string `json:"min_offering_at,omitempty"`
 
+	// only current communication
+	OnlyCurrentCommunication bool `json:"only_current_communication,omitempty"`
+
 	// status
 	Status string `json:"status,omitempty"`
 

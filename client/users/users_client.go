@@ -51,8 +51,9 @@ type ClientService interface {
 	UsersSearchUsers2(body *models.APISearchUsersRequest, opts ...ClientOption) (*UsersSearchUsers2OK, error)
 	UsersSearchUsers2WithParams(params *UsersSearchUsers2Params, opts ...ClientOption) (*UsersSearchUsers2OK, error)
 
-	UsersUpdateUser(userID string, body *models.APIUsersUpdateUserBody, opts ...ClientOption) (*UsersUpdateUserOK, error)
-	UsersUpdateUserWithParams(params *UsersUpdateUserParams, opts ...ClientOption) (*UsersUpdateUserOK, error)
+	UsersUpdateUser(params *UsersUpdateUserParams, opts ...ClientOption) (*UsersUpdateUserOK, error)
+
+	UsersUpdateUser2(params *UsersUpdateUser2Params, opts ...ClientOption) (*UsersUpdateUser2OK, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -392,12 +393,8 @@ func (a *Client) UsersSearchUsers2WithParams(params *UsersSearchUsers2Params, op
 /*
 UsersUpdateUser users update user API
 */
-func (a *Client) UsersUpdateUser(userID string, body *models.APIUsersUpdateUserBody, opts ...ClientOption) (*UsersUpdateUserOK, error) {
-	params := NewUsersUpdateUserParams().WithBody(body).WithUserID(userID)
-	return a.UsersUpdateUserWithParams(params, opts...)
-}
 
-func (a *Client) UsersUpdateUserWithParams(params *UsersUpdateUserParams, opts ...ClientOption) (*UsersUpdateUserOK, error) {
+func (a *Client) UsersUpdateUser(params *UsersUpdateUserParams, opts ...ClientOption) (*UsersUpdateUserOK, error) {
 	if params == nil {
 		params = NewUsersUpdateUserParams()
 	}
@@ -430,6 +427,46 @@ func (a *Client) UsersUpdateUserWithParams(params *UsersUpdateUserParams, opts .
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for Users_UpdateUser: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+UsersUpdateUser2 users update user2 API
+*/
+
+func (a *Client) UsersUpdateUser2(params *UsersUpdateUser2Params, opts ...ClientOption) (*UsersUpdateUser2OK, error) {
+	if params == nil {
+		params = NewUsersUpdateUser2Params()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "Users_UpdateUser2",
+		Method:             "PATCH",
+		PathPattern:        "/users/{user.id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &UsersUpdateUser2Reader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		if opt != nil {
+			opt(op)
+		}
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*UsersUpdateUser2OK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for Users_UpdateUser2: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 

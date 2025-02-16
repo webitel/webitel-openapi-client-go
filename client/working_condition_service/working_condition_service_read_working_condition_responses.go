@@ -31,14 +31,7 @@ func (o *WorkingConditionServiceReadWorkingConditionReader) ReadResponse(respons
 		}
 		return result, nil
 	default:
-		result := NewWorkingConditionServiceReadWorkingConditionDefault(response.Code())
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		if response.Code()/100 == 2 {
-			return result, nil
-		}
-		return nil, result
+		return nil, runtime.NewAPIError("[GET /wfm/lookups/working_conditions/{id}] WorkingConditionService_ReadWorkingCondition", response, response.Code())
 	}
 }
 
@@ -103,80 +96,6 @@ func (o *WorkingConditionServiceReadWorkingConditionOK) GetPayload() *models.Wfm
 func (o *WorkingConditionServiceReadWorkingConditionOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.WfmReadWorkingConditionResponse)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
-// NewWorkingConditionServiceReadWorkingConditionDefault creates a WorkingConditionServiceReadWorkingConditionDefault with default headers values
-func NewWorkingConditionServiceReadWorkingConditionDefault(code int) *WorkingConditionServiceReadWorkingConditionDefault {
-	return &WorkingConditionServiceReadWorkingConditionDefault{
-		_statusCode: code,
-	}
-}
-
-/*
-WorkingConditionServiceReadWorkingConditionDefault describes a response with status code -1, with default header values.
-
-An unexpected error response.
-*/
-type WorkingConditionServiceReadWorkingConditionDefault struct {
-	_statusCode int
-
-	Payload *models.RPCStatus
-}
-
-// IsSuccess returns true when this working condition service read working condition default response has a 2xx status code
-func (o *WorkingConditionServiceReadWorkingConditionDefault) IsSuccess() bool {
-	return o._statusCode/100 == 2
-}
-
-// IsRedirect returns true when this working condition service read working condition default response has a 3xx status code
-func (o *WorkingConditionServiceReadWorkingConditionDefault) IsRedirect() bool {
-	return o._statusCode/100 == 3
-}
-
-// IsClientError returns true when this working condition service read working condition default response has a 4xx status code
-func (o *WorkingConditionServiceReadWorkingConditionDefault) IsClientError() bool {
-	return o._statusCode/100 == 4
-}
-
-// IsServerError returns true when this working condition service read working condition default response has a 5xx status code
-func (o *WorkingConditionServiceReadWorkingConditionDefault) IsServerError() bool {
-	return o._statusCode/100 == 5
-}
-
-// IsCode returns true when this working condition service read working condition default response a status code equal to that given
-func (o *WorkingConditionServiceReadWorkingConditionDefault) IsCode(code int) bool {
-	return o._statusCode == code
-}
-
-// Code gets the status code for the working condition service read working condition default response
-func (o *WorkingConditionServiceReadWorkingConditionDefault) Code() int {
-	return o._statusCode
-}
-
-func (o *WorkingConditionServiceReadWorkingConditionDefault) Error() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[GET /wfm/lookups/working_conditions/{id}][%d] WorkingConditionService_ReadWorkingCondition default %s", o._statusCode, payload)
-}
-
-func (o *WorkingConditionServiceReadWorkingConditionDefault) String() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[GET /wfm/lookups/working_conditions/{id}][%d] WorkingConditionService_ReadWorkingCondition default %s", o._statusCode, payload)
-}
-
-func (o *WorkingConditionServiceReadWorkingConditionDefault) GetPayload() *models.RPCStatus {
-	return o.Payload
-}
-
-func (o *WorkingConditionServiceReadWorkingConditionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.RPCStatus)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

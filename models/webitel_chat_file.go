@@ -28,6 +28,9 @@ type WebitelChatFile struct {
 
 	// MIME media type
 	Type string `json:"type,omitempty"`
+
+	// File url (optional)
+	URL string `json:"url,omitempty"`
 }
 
 // Validate validates this webitel chat file

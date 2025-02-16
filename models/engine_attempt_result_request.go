@@ -44,6 +44,9 @@ type EngineAttemptResultRequest struct {
 	// next member id
 	NextMemberID string `json:"next_member_id,omitempty"`
 
+	// only current communication
+	OnlyCurrentCommunication bool `json:"only_current_communication,omitempty"`
+
 	// queue id
 	QueueID int32 `json:"queue_id,omitempty"`
 

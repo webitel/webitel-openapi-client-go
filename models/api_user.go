@@ -19,6 +19,10 @@ import (
 // swagger:model api.User
 type APIUser struct {
 
+	// The "chat_name" field is used to store the name displayed externally on the platform.
+	// For example, "chat_name" is shown when an agent connects to chats with clients.
+	ChatName string `json:"chat_name,omitempty"`
+
 	// repeated Call calls = 13; // order by created_at
 	// repeated Registration reged = 13; // order by register_last
 	//

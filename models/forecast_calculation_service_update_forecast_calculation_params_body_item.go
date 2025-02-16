@@ -18,6 +18,9 @@ import (
 // swagger:model forecastCalculationServiceUpdateForecastCalculationParamsBodyItem
 type ForecastCalculationServiceUpdateForecastCalculationParamsBodyItem struct {
 
+	// args
+	Args []string `json:"args"`
+
 	// created at
 	CreatedAt string `json:"created_at,omitempty"`
 

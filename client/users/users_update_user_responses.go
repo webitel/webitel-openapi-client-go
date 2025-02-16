@@ -43,10 +43,10 @@ func NewUsersUpdateUserOK() *UsersUpdateUserOK {
 /*
 UsersUpdateUserOK describes a response with status code 200, with default header values.
 
-A successful response.
+(empty)
 */
 type UsersUpdateUserOK struct {
-	Payload *models.APIUpdateUserResponse
+	Payload *models.APIUser
 }
 
 // IsSuccess returns true when this users update user Ok response has a 2xx status code
@@ -89,13 +89,13 @@ func (o *UsersUpdateUserOK) String() string {
 	return fmt.Sprintf("[PUT /users/{user.id}][%d] usersUpdateUserOk %s", 200, payload)
 }
 
-func (o *UsersUpdateUserOK) GetPayload() *models.APIUpdateUserResponse {
+func (o *UsersUpdateUserOK) GetPayload() *models.APIUser {
 	return o.Payload
 }
 
 func (o *UsersUpdateUserOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.APIUpdateUserResponse)
+	o.Payload = new(models.APIUser)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

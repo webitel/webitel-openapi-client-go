@@ -18,6 +18,9 @@ import (
 // swagger:model wfmForecastCalculation
 type WfmForecastCalculation struct {
 
+	// args
+	Args []string `json:"args"`
+
 	// created at
 	CreatedAt string `json:"created_at,omitempty"`
 

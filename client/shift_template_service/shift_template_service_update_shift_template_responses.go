@@ -31,14 +31,7 @@ func (o *ShiftTemplateServiceUpdateShiftTemplateReader) ReadResponse(response ru
 		}
 		return result, nil
 	default:
-		result := NewShiftTemplateServiceUpdateShiftTemplateDefault(response.Code())
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		if response.Code()/100 == 2 {
-			return result, nil
-		}
-		return nil, result
+		return nil, runtime.NewAPIError("[PUT /wfm/lookups/shift_templates/{item.id}] ShiftTemplateService_UpdateShiftTemplate", response, response.Code())
 	}
 }
 
@@ -103,80 +96,6 @@ func (o *ShiftTemplateServiceUpdateShiftTemplateOK) GetPayload() *models.WfmUpda
 func (o *ShiftTemplateServiceUpdateShiftTemplateOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.WfmUpdateShiftTemplateResponse)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
-// NewShiftTemplateServiceUpdateShiftTemplateDefault creates a ShiftTemplateServiceUpdateShiftTemplateDefault with default headers values
-func NewShiftTemplateServiceUpdateShiftTemplateDefault(code int) *ShiftTemplateServiceUpdateShiftTemplateDefault {
-	return &ShiftTemplateServiceUpdateShiftTemplateDefault{
-		_statusCode: code,
-	}
-}
-
-/*
-ShiftTemplateServiceUpdateShiftTemplateDefault describes a response with status code -1, with default header values.
-
-An unexpected error response.
-*/
-type ShiftTemplateServiceUpdateShiftTemplateDefault struct {
-	_statusCode int
-
-	Payload *models.RPCStatus
-}
-
-// IsSuccess returns true when this shift template service update shift template default response has a 2xx status code
-func (o *ShiftTemplateServiceUpdateShiftTemplateDefault) IsSuccess() bool {
-	return o._statusCode/100 == 2
-}
-
-// IsRedirect returns true when this shift template service update shift template default response has a 3xx status code
-func (o *ShiftTemplateServiceUpdateShiftTemplateDefault) IsRedirect() bool {
-	return o._statusCode/100 == 3
-}
-
-// IsClientError returns true when this shift template service update shift template default response has a 4xx status code
-func (o *ShiftTemplateServiceUpdateShiftTemplateDefault) IsClientError() bool {
-	return o._statusCode/100 == 4
-}
-
-// IsServerError returns true when this shift template service update shift template default response has a 5xx status code
-func (o *ShiftTemplateServiceUpdateShiftTemplateDefault) IsServerError() bool {
-	return o._statusCode/100 == 5
-}
-
-// IsCode returns true when this shift template service update shift template default response a status code equal to that given
-func (o *ShiftTemplateServiceUpdateShiftTemplateDefault) IsCode(code int) bool {
-	return o._statusCode == code
-}
-
-// Code gets the status code for the shift template service update shift template default response
-func (o *ShiftTemplateServiceUpdateShiftTemplateDefault) Code() int {
-	return o._statusCode
-}
-
-func (o *ShiftTemplateServiceUpdateShiftTemplateDefault) Error() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[PUT /wfm/lookups/shift_templates/{item.id}][%d] ShiftTemplateService_UpdateShiftTemplate default %s", o._statusCode, payload)
-}
-
-func (o *ShiftTemplateServiceUpdateShiftTemplateDefault) String() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[PUT /wfm/lookups/shift_templates/{item.id}][%d] ShiftTemplateService_UpdateShiftTemplate default %s", o._statusCode, payload)
-}
-
-func (o *ShiftTemplateServiceUpdateShiftTemplateDefault) GetPayload() *models.RPCStatus {
-	return o.Payload
-}
-
-func (o *ShiftTemplateServiceUpdateShiftTemplateDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.RPCStatus)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

@@ -6,6 +6,8 @@ package forecast_calculation_service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"fmt"
+
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
 
@@ -87,8 +89,9 @@ func (a *Client) ForecastCalculationServiceCreateForecastCalculationWithParams(p
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*ForecastCalculationServiceCreateForecastCalculationDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for ForecastCalculationService_CreateForecastCalculation: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*
@@ -130,8 +133,9 @@ func (a *Client) ForecastCalculationServiceDeleteForecastCalculationWithParams(p
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*ForecastCalculationServiceDeleteForecastCalculationDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for ForecastCalculationService_DeleteForecastCalculation: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*
@@ -145,7 +149,7 @@ func (a *Client) ForecastCalculationServiceExecuteForecastCalculation(params *Fo
 	op := &runtime.ClientOperation{
 		ID:                 "ForecastCalculationService_ExecuteForecastCalculation",
 		Method:             "GET",
-		PathPattern:        "/wfm/lookups/forecast_calculation/{id_1}",
+		PathPattern:        "/wfm/lookups/forecast_calculation/{id}/execute",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
@@ -169,8 +173,9 @@ func (a *Client) ForecastCalculationServiceExecuteForecastCalculation(params *Fo
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*ForecastCalculationServiceExecuteForecastCalculationDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for ForecastCalculationService_ExecuteForecastCalculation: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*
@@ -208,8 +213,9 @@ func (a *Client) ForecastCalculationServiceReadForecastCalculation(params *Forec
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*ForecastCalculationServiceReadForecastCalculationDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for ForecastCalculationService_ReadForecastCalculation: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*
@@ -247,8 +253,9 @@ func (a *Client) ForecastCalculationServiceSearchForecastCalculation(params *For
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*ForecastCalculationServiceSearchForecastCalculationDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for ForecastCalculationService_SearchForecastCalculation: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*
@@ -290,8 +297,9 @@ func (a *Client) ForecastCalculationServiceUpdateForecastCalculationWithParams(p
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*ForecastCalculationServiceUpdateForecastCalculationDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for ForecastCalculationService_UpdateForecastCalculation: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 // SetTransport changes the transport on the client

@@ -63,14 +63,14 @@ GroupsUpdateGroup2Params contains all the parameters to send to the API endpoint
 */
 type GroupsUpdateGroup2Params struct {
 
-	// Body.
-	Body *models.WebitelContactsGroupsUpdateGroupBody
-
 	/* ID.
 
 	   The unique ID of the group to update.
 	*/
 	ID string
+
+	// Input.
+	Input *models.WebitelContactsInputGroup
 
 	timeout    time.Duration
 	Context    context.Context
@@ -125,17 +125,6 @@ func (o *GroupsUpdateGroup2Params) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
-// WithBody adds the body to the groups update group2 params
-func (o *GroupsUpdateGroup2Params) WithBody(body *models.WebitelContactsGroupsUpdateGroupBody) *GroupsUpdateGroup2Params {
-	o.SetBody(body)
-	return o
-}
-
-// SetBody adds the body to the groups update group2 params
-func (o *GroupsUpdateGroup2Params) SetBody(body *models.WebitelContactsGroupsUpdateGroupBody) {
-	o.Body = body
-}
-
 // WithID adds the id to the groups update group2 params
 func (o *GroupsUpdateGroup2Params) WithID(id string) *GroupsUpdateGroup2Params {
 	o.SetID(id)
@@ -147,6 +136,17 @@ func (o *GroupsUpdateGroup2Params) SetID(id string) {
 	o.ID = id
 }
 
+// WithInput adds the input to the groups update group2 params
+func (o *GroupsUpdateGroup2Params) WithInput(input *models.WebitelContactsInputGroup) *GroupsUpdateGroup2Params {
+	o.SetInput(input)
+	return o
+}
+
+// SetInput adds the input to the groups update group2 params
+func (o *GroupsUpdateGroup2Params) SetInput(input *models.WebitelContactsInputGroup) {
+	o.Input = input
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *GroupsUpdateGroup2Params) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -154,15 +154,15 @@ func (o *GroupsUpdateGroup2Params) WriteToRequest(r runtime.ClientRequest, reg s
 		return err
 	}
 	var res []error
-	if o.Body != nil {
-		if err := r.SetBodyParam(o.Body); err != nil {
-			return err
-		}
-	}
 
 	// path param id
 	if err := r.SetPathParam("id", o.ID); err != nil {
 		return err
+	}
+	if o.Input != nil {
+		if err := r.SetBodyParam(o.Input); err != nil {
+			return err
+		}
 	}
 
 	if len(res) > 0 {

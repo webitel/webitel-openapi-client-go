@@ -8,6 +8,7 @@ package models
 import (
 	"context"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
@@ -19,6 +20,12 @@ type EngineSkill struct {
 
 	// active agents
 	ActiveAgents int32 `json:"active_agents,omitempty"`
+
+	// created at
+	CreatedAt string `json:"created_at,omitempty"`
+
+	// created by
+	CreatedBy *EngineLookup `json:"created_by,omitempty"`
 
 	// description
 	Description string `json:"description,omitempty"`
@@ -34,15 +41,127 @@ type EngineSkill struct {
 
 	// total agents
 	TotalAgents int32 `json:"total_agents,omitempty"`
+
+	// updated at
+	UpdatedAt string `json:"updated_at,omitempty"`
+
+	// updated by
+	UpdatedBy *EngineLookup `json:"updated_by,omitempty"`
 }
 
 // Validate validates this engine skill
 func (m *EngineSkill) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateCreatedBy(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateUpdatedBy(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
 	return nil
 }
 
-// ContextValidate validates this engine skill based on context it is used
+func (m *EngineSkill) validateCreatedBy(formats strfmt.Registry) error {
+	if swag.IsZero(m.CreatedBy) { // not required
+		return nil
+	}
+
+	if m.CreatedBy != nil {
+		if err := m.CreatedBy.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("created_by")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("created_by")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *EngineSkill) validateUpdatedBy(formats strfmt.Registry) error {
+	if swag.IsZero(m.UpdatedBy) { // not required
+		return nil
+	}
+
+	if m.UpdatedBy != nil {
+		if err := m.UpdatedBy.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("updated_by")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("updated_by")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this engine skill based on the context it is used
 func (m *EngineSkill) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateCreatedBy(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateUpdatedBy(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *EngineSkill) contextValidateCreatedBy(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.CreatedBy != nil {
+
+		if swag.IsZero(m.CreatedBy) { // not required
+			return nil
+		}
+
+		if err := m.CreatedBy.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("created_by")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("created_by")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *EngineSkill) contextValidateUpdatedBy(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.UpdatedBy != nil {
+
+		if swag.IsZero(m.UpdatedBy) { // not required
+			return nil
+		}
+
+		if err := m.UpdatedBy.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("updated_by")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("updated_by")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

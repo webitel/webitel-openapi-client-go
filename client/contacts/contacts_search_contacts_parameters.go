@@ -80,6 +80,14 @@ type ContactsSearchContactsParams struct {
 	*/
 	Fields []string
 
+	/* GroupID.
+
+	   Filter by group ID.
+
+	   Format: int64
+	*/
+	GroupID *string
+
 	/* ID.
 
 	     Records with unique IDentifier(s).
@@ -98,6 +106,14 @@ type ContactsSearchContactsParams struct {
 	    Default: "READ"
 	*/
 	Mode *string
+
+	/* NotIDGroup.
+
+	   Filter contacts that are not attached to the provided group.
+
+	   Format: int64
+	*/
+	NotIDGroup *string
 
 	/* Page.
 
@@ -255,6 +271,17 @@ func (o *ContactsSearchContactsParams) SetFields(fields []string) {
 	o.Fields = fields
 }
 
+// WithGroupID adds the groupID to the contacts search contacts params
+func (o *ContactsSearchContactsParams) WithGroupID(groupID *string) *ContactsSearchContactsParams {
+	o.SetGroupID(groupID)
+	return o
+}
+
+// SetGroupID adds the groupId to the contacts search contacts params
+func (o *ContactsSearchContactsParams) SetGroupID(groupID *string) {
+	o.GroupID = groupID
+}
+
 // WithID adds the id to the contacts search contacts params
 func (o *ContactsSearchContactsParams) WithID(id []string) *ContactsSearchContactsParams {
 	o.SetID(id)
@@ -275,6 +302,17 @@ func (o *ContactsSearchContactsParams) WithMode(mode *string) *ContactsSearchCon
 // SetMode adds the mode to the contacts search contacts params
 func (o *ContactsSearchContactsParams) SetMode(mode *string) {
 	o.Mode = mode
+}
+
+// WithNotIDGroup adds the notIDGroup to the contacts search contacts params
+func (o *ContactsSearchContactsParams) WithNotIDGroup(notIDGroup *string) *ContactsSearchContactsParams {
+	o.SetNotIDGroup(notIDGroup)
+	return o
+}
+
+// SetNotIDGroup adds the notIdGroup to the contacts search contacts params
+func (o *ContactsSearchContactsParams) SetNotIDGroup(notIDGroup *string) {
+	o.NotIDGroup = notIDGroup
 }
 
 // WithPage adds the page to the contacts search contacts params
@@ -351,6 +389,23 @@ func (o *ContactsSearchContactsParams) WriteToRequest(r runtime.ClientRequest, r
 		}
 	}
 
+	if o.GroupID != nil {
+
+		// query param group_id
+		var qrGroupID string
+
+		if o.GroupID != nil {
+			qrGroupID = *o.GroupID
+		}
+		qGroupID := qrGroupID
+		if qGroupID != "" {
+
+			if err := r.SetQueryParam("group_id", qGroupID); err != nil {
+				return err
+			}
+		}
+	}
+
 	if o.ID != nil {
 
 		// binding items for id
@@ -374,6 +429,23 @@ func (o *ContactsSearchContactsParams) WriteToRequest(r runtime.ClientRequest, r
 		if qMode != "" {
 
 			if err := r.SetQueryParam("mode", qMode); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.NotIDGroup != nil {
+
+		// query param not_id_group
+		var qrNotIDGroup string
+
+		if o.NotIDGroup != nil {
+			qrNotIDGroup = *o.NotIDGroup
+		}
+		qNotIDGroup := qrNotIDGroup
+		if qNotIDGroup != "" {
+
+			if err := r.SetQueryParam("not_id_group", qNotIDGroup); err != nil {
 				return err
 			}
 		}

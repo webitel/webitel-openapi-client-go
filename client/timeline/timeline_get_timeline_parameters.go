@@ -86,8 +86,8 @@ type TimelineGetTimelineParams struct {
 	// Format: int64
 	Page *string
 
-	// Search.
-	Search *string
+	// Q.
+	Q *string
 
 	// Size.
 	//
@@ -219,15 +219,15 @@ func (o *TimelineGetTimelineParams) SetPage(page *string) {
 	o.Page = page
 }
 
-// WithSearch adds the search to the timeline get timeline params
-func (o *TimelineGetTimelineParams) WithSearch(search *string) *TimelineGetTimelineParams {
-	o.SetSearch(search)
+// WithQ adds the q to the timeline get timeline params
+func (o *TimelineGetTimelineParams) WithQ(q *string) *TimelineGetTimelineParams {
+	o.SetQ(q)
 	return o
 }
 
-// SetSearch adds the search to the timeline get timeline params
-func (o *TimelineGetTimelineParams) SetSearch(search *string) {
-	o.Search = search
+// SetQ adds the q to the timeline get timeline params
+func (o *TimelineGetTimelineParams) SetQ(q *string) {
+	o.Q = q
 }
 
 // WithSize adds the size to the timeline get timeline params
@@ -349,18 +349,18 @@ func (o *TimelineGetTimelineParams) WriteToRequest(r runtime.ClientRequest, reg 
 		}
 	}
 
-	if o.Search != nil {
+	if o.Q != nil {
 
-		// query param search
-		var qrSearch string
+		// query param q
+		var qrQ string
 
-		if o.Search != nil {
-			qrSearch = *o.Search
+		if o.Q != nil {
+			qrQ = *o.Q
 		}
-		qSearch := qrSearch
-		if qSearch != "" {
+		qQ := qrQ
+		if qQ != "" {
 
-			if err := r.SetQueryParam("search", qSearch); err != nil {
+			if err := r.SetQueryParam("q", qQ); err != nil {
 				return err
 			}
 		}

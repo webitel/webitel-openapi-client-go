@@ -31,14 +31,7 @@ func (o *AgentAbsenceServiceReadAgentAbsencesReader) ReadResponse(response runti
 		}
 		return result, nil
 	default:
-		result := NewAgentAbsenceServiceReadAgentAbsencesDefault(response.Code())
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		if response.Code()/100 == 2 {
-			return result, nil
-		}
-		return nil, result
+		return nil, runtime.NewAPIError("[GET /wfm/agents/{agent_id}/absences] AgentAbsenceService_ReadAgentAbsences", response, response.Code())
 	}
 }
 
@@ -103,80 +96,6 @@ func (o *AgentAbsenceServiceReadAgentAbsencesOK) GetPayload() *models.WfmReadAge
 func (o *AgentAbsenceServiceReadAgentAbsencesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.WfmReadAgentAbsencesResponse)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
-// NewAgentAbsenceServiceReadAgentAbsencesDefault creates a AgentAbsenceServiceReadAgentAbsencesDefault with default headers values
-func NewAgentAbsenceServiceReadAgentAbsencesDefault(code int) *AgentAbsenceServiceReadAgentAbsencesDefault {
-	return &AgentAbsenceServiceReadAgentAbsencesDefault{
-		_statusCode: code,
-	}
-}
-
-/*
-AgentAbsenceServiceReadAgentAbsencesDefault describes a response with status code -1, with default header values.
-
-An unexpected error response.
-*/
-type AgentAbsenceServiceReadAgentAbsencesDefault struct {
-	_statusCode int
-
-	Payload *models.RPCStatus
-}
-
-// IsSuccess returns true when this agent absence service read agent absences default response has a 2xx status code
-func (o *AgentAbsenceServiceReadAgentAbsencesDefault) IsSuccess() bool {
-	return o._statusCode/100 == 2
-}
-
-// IsRedirect returns true when this agent absence service read agent absences default response has a 3xx status code
-func (o *AgentAbsenceServiceReadAgentAbsencesDefault) IsRedirect() bool {
-	return o._statusCode/100 == 3
-}
-
-// IsClientError returns true when this agent absence service read agent absences default response has a 4xx status code
-func (o *AgentAbsenceServiceReadAgentAbsencesDefault) IsClientError() bool {
-	return o._statusCode/100 == 4
-}
-
-// IsServerError returns true when this agent absence service read agent absences default response has a 5xx status code
-func (o *AgentAbsenceServiceReadAgentAbsencesDefault) IsServerError() bool {
-	return o._statusCode/100 == 5
-}
-
-// IsCode returns true when this agent absence service read agent absences default response a status code equal to that given
-func (o *AgentAbsenceServiceReadAgentAbsencesDefault) IsCode(code int) bool {
-	return o._statusCode == code
-}
-
-// Code gets the status code for the agent absence service read agent absences default response
-func (o *AgentAbsenceServiceReadAgentAbsencesDefault) Code() int {
-	return o._statusCode
-}
-
-func (o *AgentAbsenceServiceReadAgentAbsencesDefault) Error() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[GET /wfm/agents/{agent_id}/absences][%d] AgentAbsenceService_ReadAgentAbsences default %s", o._statusCode, payload)
-}
-
-func (o *AgentAbsenceServiceReadAgentAbsencesDefault) String() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[GET /wfm/agents/{agent_id}/absences][%d] AgentAbsenceService_ReadAgentAbsences default %s", o._statusCode, payload)
-}
-
-func (o *AgentAbsenceServiceReadAgentAbsencesDefault) GetPayload() *models.RPCStatus {
-	return o.Payload
-}
-
-func (o *AgentAbsenceServiceReadAgentAbsencesDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.RPCStatus)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

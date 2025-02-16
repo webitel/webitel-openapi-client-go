@@ -62,6 +62,12 @@ GroupsListGroupsParams contains all the parameters to send to the API endpoint
 */
 type GroupsListGroupsParams struct {
 
+	/* Enabled.
+
+	   Filter by only enabled group
+	*/
+	Enabled *bool
+
 	/* Fields.
 
 	   Fields to be retrieved as a result.
@@ -110,6 +116,18 @@ type GroupsListGroupsParams struct {
 	*/
 	Sort []string
 
+	/* Type.
+
+	    Filter by group type.
+
+	- GROUP_TYPE_UNSPECIFIED: Default value
+	- STATIC: Static group
+	- DYNAMIC: Dynamic group
+
+	    Default: "GROUP_TYPE_UNSPECIFIED"
+	*/
+	Type *string
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -127,7 +145,18 @@ func (o *GroupsListGroupsParams) WithDefaults() *GroupsListGroupsParams {
 //
 // All values with no default are reset to their zero value.
 func (o *GroupsListGroupsParams) SetDefaults() {
-	// no default values defined for this parameter
+	var (
+		typeVarDefault = string("GROUP_TYPE_UNSPECIFIED")
+	)
+
+	val := GroupsListGroupsParams{
+		Type: &typeVarDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the groups list groups params
@@ -161,6 +190,17 @@ func (o *GroupsListGroupsParams) WithHTTPClient(client *http.Client) *GroupsList
 // SetHTTPClient adds the HTTPClient to the groups list groups params
 func (o *GroupsListGroupsParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
+}
+
+// WithEnabled adds the enabled to the groups list groups params
+func (o *GroupsListGroupsParams) WithEnabled(enabled *bool) *GroupsListGroupsParams {
+	o.SetEnabled(enabled)
+	return o
+}
+
+// SetEnabled adds the enabled to the groups list groups params
+func (o *GroupsListGroupsParams) SetEnabled(enabled *bool) {
+	o.Enabled = enabled
 }
 
 // WithFields adds the fields to the groups list groups params
@@ -240,6 +280,17 @@ func (o *GroupsListGroupsParams) SetSort(sort []string) {
 	o.Sort = sort
 }
 
+// WithType adds the typeVar to the groups list groups params
+func (o *GroupsListGroupsParams) WithType(typeVar *string) *GroupsListGroupsParams {
+	o.SetType(typeVar)
+	return o
+}
+
+// SetType adds the type to the groups list groups params
+func (o *GroupsListGroupsParams) SetType(typeVar *string) {
+	o.Type = typeVar
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *GroupsListGroupsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -247,6 +298,23 @@ func (o *GroupsListGroupsParams) WriteToRequest(r runtime.ClientRequest, reg str
 		return err
 	}
 	var res []error
+
+	if o.Enabled != nil {
+
+		// query param enabled
+		var qrEnabled bool
+
+		if o.Enabled != nil {
+			qrEnabled = *o.Enabled
+		}
+		qEnabled := swag.FormatBool(qrEnabled)
+		if qEnabled != "" {
+
+			if err := r.SetQueryParam("enabled", qEnabled); err != nil {
+				return err
+			}
+		}
+	}
 
 	if o.Fields != nil {
 
@@ -346,6 +414,23 @@ func (o *GroupsListGroupsParams) WriteToRequest(r runtime.ClientRequest, reg str
 		// query array param sort
 		if err := r.SetQueryParam("sort", joinedSort...); err != nil {
 			return err
+		}
+	}
+
+	if o.Type != nil {
+
+		// query param type
+		var qrType string
+
+		if o.Type != nil {
+			qrType = *o.Type
+		}
+		qType := qrType
+		if qType != "" {
+
+			if err := r.SetQueryParam("type", qType); err != nil {
+				return err
+			}
 		}
 	}
 

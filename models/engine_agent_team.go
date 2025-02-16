@@ -31,6 +31,9 @@ type EngineAgentTeam struct {
 	// domain id
 	DomainID string `json:"domain_id,omitempty"`
 
+	// forecast calculation
+	ForecastCalculation *EngineLookup `json:"forecast_calculation,omitempty"`
+
 	// id
 	ID string `json:"id,omitempty"`
 
@@ -67,6 +70,10 @@ func (m *EngineAgentTeam) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateForecastCalculation(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
@@ -99,11 +106,34 @@ func (m *EngineAgentTeam) validateAdmin(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *EngineAgentTeam) validateForecastCalculation(formats strfmt.Registry) error {
+	if swag.IsZero(m.ForecastCalculation) { // not required
+		return nil
+	}
+
+	if m.ForecastCalculation != nil {
+		if err := m.ForecastCalculation.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("forecast_calculation")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("forecast_calculation")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 // ContextValidate validate this engine agent team based on the context it is used
 func (m *EngineAgentTeam) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.contextValidateAdmin(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateForecastCalculation(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -133,6 +163,27 @@ func (m *EngineAgentTeam) contextValidateAdmin(ctx context.Context, formats strf
 			}
 		}
 
+	}
+
+	return nil
+}
+
+func (m *EngineAgentTeam) contextValidateForecastCalculation(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.ForecastCalculation != nil {
+
+		if swag.IsZero(m.ForecastCalculation) { // not required
+			return nil
+		}
+
+		if err := m.ForecastCalculation.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("forecast_calculation")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("forecast_calculation")
+			}
+			return err
+		}
 	}
 
 	return nil

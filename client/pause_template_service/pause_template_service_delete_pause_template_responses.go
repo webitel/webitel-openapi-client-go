@@ -31,14 +31,7 @@ func (o *PauseTemplateServiceDeletePauseTemplateReader) ReadResponse(response ru
 		}
 		return result, nil
 	default:
-		result := NewPauseTemplateServiceDeletePauseTemplateDefault(response.Code())
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		if response.Code()/100 == 2 {
-			return result, nil
-		}
-		return nil, result
+		return nil, runtime.NewAPIError("[DELETE /wfm/lookups/pause_templates/{id}] PauseTemplateService_DeletePauseTemplate", response, response.Code())
 	}
 }
 
@@ -103,80 +96,6 @@ func (o *PauseTemplateServiceDeletePauseTemplateOK) GetPayload() *models.WfmDele
 func (o *PauseTemplateServiceDeletePauseTemplateOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.WfmDeletePauseTemplateResponse)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
-// NewPauseTemplateServiceDeletePauseTemplateDefault creates a PauseTemplateServiceDeletePauseTemplateDefault with default headers values
-func NewPauseTemplateServiceDeletePauseTemplateDefault(code int) *PauseTemplateServiceDeletePauseTemplateDefault {
-	return &PauseTemplateServiceDeletePauseTemplateDefault{
-		_statusCode: code,
-	}
-}
-
-/*
-PauseTemplateServiceDeletePauseTemplateDefault describes a response with status code -1, with default header values.
-
-An unexpected error response.
-*/
-type PauseTemplateServiceDeletePauseTemplateDefault struct {
-	_statusCode int
-
-	Payload *models.RPCStatus
-}
-
-// IsSuccess returns true when this pause template service delete pause template default response has a 2xx status code
-func (o *PauseTemplateServiceDeletePauseTemplateDefault) IsSuccess() bool {
-	return o._statusCode/100 == 2
-}
-
-// IsRedirect returns true when this pause template service delete pause template default response has a 3xx status code
-func (o *PauseTemplateServiceDeletePauseTemplateDefault) IsRedirect() bool {
-	return o._statusCode/100 == 3
-}
-
-// IsClientError returns true when this pause template service delete pause template default response has a 4xx status code
-func (o *PauseTemplateServiceDeletePauseTemplateDefault) IsClientError() bool {
-	return o._statusCode/100 == 4
-}
-
-// IsServerError returns true when this pause template service delete pause template default response has a 5xx status code
-func (o *PauseTemplateServiceDeletePauseTemplateDefault) IsServerError() bool {
-	return o._statusCode/100 == 5
-}
-
-// IsCode returns true when this pause template service delete pause template default response a status code equal to that given
-func (o *PauseTemplateServiceDeletePauseTemplateDefault) IsCode(code int) bool {
-	return o._statusCode == code
-}
-
-// Code gets the status code for the pause template service delete pause template default response
-func (o *PauseTemplateServiceDeletePauseTemplateDefault) Code() int {
-	return o._statusCode
-}
-
-func (o *PauseTemplateServiceDeletePauseTemplateDefault) Error() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[DELETE /wfm/lookups/pause_templates/{id}][%d] PauseTemplateService_DeletePauseTemplate default %s", o._statusCode, payload)
-}
-
-func (o *PauseTemplateServiceDeletePauseTemplateDefault) String() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[DELETE /wfm/lookups/pause_templates/{id}][%d] PauseTemplateService_DeletePauseTemplate default %s", o._statusCode, payload)
-}
-
-func (o *PauseTemplateServiceDeletePauseTemplateDefault) GetPayload() *models.RPCStatus {
-	return o.Payload
-}
-
-func (o *PauseTemplateServiceDeletePauseTemplateDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.RPCStatus)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

@@ -7,6 +7,7 @@ package models
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
@@ -18,20 +19,32 @@ import (
 // swagger:model webitel.contacts.Group
 type WebitelContactsGroup struct {
 
+	// List of dynamic conditions associated with the group.
+	Conditions []*WebitelContactsDynamicCondition `json:"conditions"`
+
 	// Timestamp(milli) of the group's creation.
 	CreatedAt string `json:"created_at,omitempty"`
 
 	// The user who created this group.
 	CreatedBy *WebitelContactsLookup `json:"created_by,omitempty"`
 
+	// Default static group to be assigned if no conditions are met.
+	DefaultGroup *WebitelContactsLookup `json:"default_group,omitempty"`
+
 	// The description of the group.
 	Description string `json:"description,omitempty"`
+
+	// enabled
+	Enabled bool `json:"enabled,omitempty"`
 
 	// The unique ID of the group. Never changes.
 	ID string `json:"id,omitempty"`
 
 	// The name of the group.
 	Name string `json:"name,omitempty"`
+
+	// type
+	Type *WebitelContactsGroupType `json:"type,omitempty"`
 
 	// Timestamp(milli) of the last group update.
 	UpdatedAt string `json:"updated_at,omitempty"`
@@ -44,7 +57,19 @@ type WebitelContactsGroup struct {
 func (m *WebitelContactsGroup) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateConditions(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateCreatedBy(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateDefaultGroup(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateType(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -55,6 +80,32 @@ func (m *WebitelContactsGroup) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *WebitelContactsGroup) validateConditions(formats strfmt.Registry) error {
+	if swag.IsZero(m.Conditions) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.Conditions); i++ {
+		if swag.IsZero(m.Conditions[i]) { // not required
+			continue
+		}
+
+		if m.Conditions[i] != nil {
+			if err := m.Conditions[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("conditions" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("conditions" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
 	return nil
 }
 
@@ -69,6 +120,44 @@ func (m *WebitelContactsGroup) validateCreatedBy(formats strfmt.Registry) error 
 				return ve.ValidateName("created_by")
 			} else if ce, ok := err.(*errors.CompositeError); ok {
 				return ce.ValidateName("created_by")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *WebitelContactsGroup) validateDefaultGroup(formats strfmt.Registry) error {
+	if swag.IsZero(m.DefaultGroup) { // not required
+		return nil
+	}
+
+	if m.DefaultGroup != nil {
+		if err := m.DefaultGroup.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("default_group")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("default_group")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *WebitelContactsGroup) validateType(formats strfmt.Registry) error {
+	if swag.IsZero(m.Type) { // not required
+		return nil
+	}
+
+	if m.Type != nil {
+		if err := m.Type.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("type")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("type")
 			}
 			return err
 		}
@@ -100,7 +189,19 @@ func (m *WebitelContactsGroup) validateUpdatedBy(formats strfmt.Registry) error 
 func (m *WebitelContactsGroup) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.contextValidateConditions(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.contextValidateCreatedBy(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateDefaultGroup(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateType(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -111,6 +212,31 @@ func (m *WebitelContactsGroup) ContextValidate(ctx context.Context, formats strf
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *WebitelContactsGroup) contextValidateConditions(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Conditions); i++ {
+
+		if m.Conditions[i] != nil {
+
+			if swag.IsZero(m.Conditions[i]) { // not required
+				return nil
+			}
+
+			if err := m.Conditions[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("conditions" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("conditions" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
 	return nil
 }
 
@@ -127,6 +253,48 @@ func (m *WebitelContactsGroup) contextValidateCreatedBy(ctx context.Context, for
 				return ve.ValidateName("created_by")
 			} else if ce, ok := err.(*errors.CompositeError); ok {
 				return ce.ValidateName("created_by")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *WebitelContactsGroup) contextValidateDefaultGroup(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.DefaultGroup != nil {
+
+		if swag.IsZero(m.DefaultGroup) { // not required
+			return nil
+		}
+
+		if err := m.DefaultGroup.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("default_group")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("default_group")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *WebitelContactsGroup) contextValidateType(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Type != nil {
+
+		if swag.IsZero(m.Type) { // not required
+			return nil
+		}
+
+		if err := m.Type.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("type")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("type")
 			}
 			return err
 		}

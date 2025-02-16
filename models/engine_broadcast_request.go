@@ -7,7 +7,9 @@ package models
 
 import (
 	"context"
+	"strconv"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
@@ -16,6 +18,12 @@ import (
 //
 // swagger:model engineBroadcastRequest
 type EngineBroadcastRequest struct {
+
+	// buttons
+	Buttons []*EngineBroadcastButtons `json:"buttons"`
+
+	// Message Media. Attachment.
+	File *EngineBroadcastFile `json:"file,omitempty"`
 
 	// peer
 	Peer []string `json:"peer"`
@@ -29,11 +37,128 @@ type EngineBroadcastRequest struct {
 
 // Validate validates this engine broadcast request
 func (m *EngineBroadcastRequest) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateButtons(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateFile(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
 	return nil
 }
 
-// ContextValidate validates this engine broadcast request based on context it is used
+func (m *EngineBroadcastRequest) validateButtons(formats strfmt.Registry) error {
+	if swag.IsZero(m.Buttons) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.Buttons); i++ {
+		if swag.IsZero(m.Buttons[i]) { // not required
+			continue
+		}
+
+		if m.Buttons[i] != nil {
+			if err := m.Buttons[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("buttons" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("buttons" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *EngineBroadcastRequest) validateFile(formats strfmt.Registry) error {
+	if swag.IsZero(m.File) { // not required
+		return nil
+	}
+
+	if m.File != nil {
+		if err := m.File.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("file")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("file")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this engine broadcast request based on the context it is used
 func (m *EngineBroadcastRequest) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateButtons(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateFile(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *EngineBroadcastRequest) contextValidateButtons(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Buttons); i++ {
+
+		if m.Buttons[i] != nil {
+
+			if swag.IsZero(m.Buttons[i]) { // not required
+				return nil
+			}
+
+			if err := m.Buttons[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("buttons" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("buttons" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *EngineBroadcastRequest) contextValidateFile(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.File != nil {
+
+		if swag.IsZero(m.File) { // not required
+			return nil
+		}
+
+		if err := m.File.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("file")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("file")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

@@ -31,6 +31,9 @@ type EngineCreateAgentTeamRequest struct {
 	// domain id
 	DomainID string `json:"domain_id,omitempty"`
 
+	// forecast calculation
+	ForecastCalculation *EngineLookup `json:"forecast_calculation,omitempty"`
+
 	// invite chat timeout
 	InviteChatTimeout int32 `json:"invite_chat_timeout,omitempty"`
 
@@ -58,6 +61,10 @@ func (m *EngineCreateAgentTeamRequest) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateAdmin(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateForecastCalculation(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -93,11 +100,34 @@ func (m *EngineCreateAgentTeamRequest) validateAdmin(formats strfmt.Registry) er
 	return nil
 }
 
+func (m *EngineCreateAgentTeamRequest) validateForecastCalculation(formats strfmt.Registry) error {
+	if swag.IsZero(m.ForecastCalculation) { // not required
+		return nil
+	}
+
+	if m.ForecastCalculation != nil {
+		if err := m.ForecastCalculation.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("forecast_calculation")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("forecast_calculation")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 // ContextValidate validate this engine create agent team request based on the context it is used
 func (m *EngineCreateAgentTeamRequest) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.contextValidateAdmin(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateForecastCalculation(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -127,6 +157,27 @@ func (m *EngineCreateAgentTeamRequest) contextValidateAdmin(ctx context.Context,
 			}
 		}
 
+	}
+
+	return nil
+}
+
+func (m *EngineCreateAgentTeamRequest) contextValidateForecastCalculation(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.ForecastCalculation != nil {
+
+		if swag.IsZero(m.ForecastCalculation) { // not required
+			return nil
+		}
+
+		if err := m.ForecastCalculation.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("forecast_calculation")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("forecast_calculation")
+			}
+			return err
+		}
 	}
 
 	return nil

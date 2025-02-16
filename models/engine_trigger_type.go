@@ -35,6 +35,9 @@ const (
 
 	// EngineTriggerTypeCron captures enum value "cron"
 	EngineTriggerTypeCron EngineTriggerType = "cron"
+
+	// EngineTriggerTypeCase captures enum value "case"
+	EngineTriggerTypeCase EngineTriggerType = "case"
 )
 
 // for schema
@@ -42,7 +45,7 @@ var engineTriggerTypeEnum []interface{}
 
 func init() {
 	var res []EngineTriggerType
-	if err := json.Unmarshal([]byte(`["default_trigger_type","cron"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["default_trigger_type","cron","case"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {

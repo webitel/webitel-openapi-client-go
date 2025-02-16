@@ -31,14 +31,7 @@ func (o *AgentWorkingConditionsServiceReadAgentWorkingConditionsReader) ReadResp
 		}
 		return result, nil
 	default:
-		result := NewAgentWorkingConditionsServiceReadAgentWorkingConditionsDefault(response.Code())
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		if response.Code()/100 == 2 {
-			return result, nil
-		}
-		return nil, result
+		return nil, runtime.NewAPIError("[GET /wfm/agents/{agent_id}/conditions] AgentWorkingConditionsService_ReadAgentWorkingConditions", response, response.Code())
 	}
 }
 
@@ -103,80 +96,6 @@ func (o *AgentWorkingConditionsServiceReadAgentWorkingConditionsOK) GetPayload()
 func (o *AgentWorkingConditionsServiceReadAgentWorkingConditionsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.WfmReadAgentWorkingConditionsResponse)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
-// NewAgentWorkingConditionsServiceReadAgentWorkingConditionsDefault creates a AgentWorkingConditionsServiceReadAgentWorkingConditionsDefault with default headers values
-func NewAgentWorkingConditionsServiceReadAgentWorkingConditionsDefault(code int) *AgentWorkingConditionsServiceReadAgentWorkingConditionsDefault {
-	return &AgentWorkingConditionsServiceReadAgentWorkingConditionsDefault{
-		_statusCode: code,
-	}
-}
-
-/*
-AgentWorkingConditionsServiceReadAgentWorkingConditionsDefault describes a response with status code -1, with default header values.
-
-An unexpected error response.
-*/
-type AgentWorkingConditionsServiceReadAgentWorkingConditionsDefault struct {
-	_statusCode int
-
-	Payload *models.RPCStatus
-}
-
-// IsSuccess returns true when this agent working conditions service read agent working conditions default response has a 2xx status code
-func (o *AgentWorkingConditionsServiceReadAgentWorkingConditionsDefault) IsSuccess() bool {
-	return o._statusCode/100 == 2
-}
-
-// IsRedirect returns true when this agent working conditions service read agent working conditions default response has a 3xx status code
-func (o *AgentWorkingConditionsServiceReadAgentWorkingConditionsDefault) IsRedirect() bool {
-	return o._statusCode/100 == 3
-}
-
-// IsClientError returns true when this agent working conditions service read agent working conditions default response has a 4xx status code
-func (o *AgentWorkingConditionsServiceReadAgentWorkingConditionsDefault) IsClientError() bool {
-	return o._statusCode/100 == 4
-}
-
-// IsServerError returns true when this agent working conditions service read agent working conditions default response has a 5xx status code
-func (o *AgentWorkingConditionsServiceReadAgentWorkingConditionsDefault) IsServerError() bool {
-	return o._statusCode/100 == 5
-}
-
-// IsCode returns true when this agent working conditions service read agent working conditions default response a status code equal to that given
-func (o *AgentWorkingConditionsServiceReadAgentWorkingConditionsDefault) IsCode(code int) bool {
-	return o._statusCode == code
-}
-
-// Code gets the status code for the agent working conditions service read agent working conditions default response
-func (o *AgentWorkingConditionsServiceReadAgentWorkingConditionsDefault) Code() int {
-	return o._statusCode
-}
-
-func (o *AgentWorkingConditionsServiceReadAgentWorkingConditionsDefault) Error() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[GET /wfm/agents/{agent_id}/conditions][%d] AgentWorkingConditionsService_ReadAgentWorkingConditions default %s", o._statusCode, payload)
-}
-
-func (o *AgentWorkingConditionsServiceReadAgentWorkingConditionsDefault) String() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[GET /wfm/agents/{agent_id}/conditions][%d] AgentWorkingConditionsService_ReadAgentWorkingConditions default %s", o._statusCode, payload)
-}
-
-func (o *AgentWorkingConditionsServiceReadAgentWorkingConditionsDefault) GetPayload() *models.RPCStatus {
-	return o.Payload
-}
-
-func (o *AgentWorkingConditionsServiceReadAgentWorkingConditionsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.RPCStatus)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

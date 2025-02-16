@@ -65,6 +65,12 @@ const (
 
 	// EngineSystemSettingNameAutolinkCallToContact captures enum value "autolink_call_to_contact"
 	EngineSystemSettingNameAutolinkCallToContact EngineSystemSettingName = "autolink_call_to_contact"
+
+	// EngineSystemSettingNamePeriodToPlaybackRecords captures enum value "period_to_playback_records"
+	EngineSystemSettingNamePeriodToPlaybackRecords EngineSystemSettingName = "period_to_playback_records"
+
+	// EngineSystemSettingNameIsFulltextSearchEnabled captures enum value "is_fulltext_search_enabled"
+	EngineSystemSettingNameIsFulltextSearchEnabled EngineSystemSettingName = "is_fulltext_search_enabled"
 )
 
 // for schema
@@ -72,7 +78,7 @@ var engineSystemSettingNameEnum []interface{}
 
 func init() {
 	var res []EngineSystemSettingName
-	if err := json.Unmarshal([]byte(`["empty_system_settings_name","enable_omnichannel","member_chunk_size","amd_cancel_not_human","scheme_version_limit","enable_2fa","export_settings","search_number_length","chat_ai_connection","password_reg_exp","password_validation_text","autolink_call_to_contact"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["empty_system_settings_name","enable_omnichannel","member_chunk_size","amd_cancel_not_human","scheme_version_limit","enable_2fa","export_settings","search_number_length","chat_ai_connection","password_reg_exp","password_validation_text","autolink_call_to_contact","period_to_playback_records","is_fulltext_search_enabled"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {

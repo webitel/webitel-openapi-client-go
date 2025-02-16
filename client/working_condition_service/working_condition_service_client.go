@@ -6,6 +6,8 @@ package working_condition_service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"fmt"
+
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
 
@@ -85,8 +87,9 @@ func (a *Client) WorkingConditionServiceCreateWorkingConditionWithParams(params 
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*WorkingConditionServiceCreateWorkingConditionDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for WorkingConditionService_CreateWorkingCondition: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*
@@ -128,8 +131,9 @@ func (a *Client) WorkingConditionServiceDeleteWorkingConditionWithParams(params 
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*WorkingConditionServiceDeleteWorkingConditionDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for WorkingConditionService_DeleteWorkingCondition: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*
@@ -167,8 +171,9 @@ func (a *Client) WorkingConditionServiceReadWorkingCondition(params *WorkingCond
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*WorkingConditionServiceReadWorkingConditionDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for WorkingConditionService_ReadWorkingCondition: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*
@@ -206,8 +211,9 @@ func (a *Client) WorkingConditionServiceSearchWorkingCondition(params *WorkingCo
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*WorkingConditionServiceSearchWorkingConditionDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for WorkingConditionService_SearchWorkingCondition: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*
@@ -249,8 +255,9 @@ func (a *Client) WorkingConditionServiceUpdateWorkingConditionWithParams(params 
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*WorkingConditionServiceUpdateWorkingConditionDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for WorkingConditionService_UpdateWorkingCondition: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 // SetTransport changes the transport on the client

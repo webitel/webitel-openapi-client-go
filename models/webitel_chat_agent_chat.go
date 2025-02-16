@@ -24,6 +24,9 @@ type WebitelChatAgentChat struct {
 	// closed at
 	ClosedAt string `json:"closed_at,omitempty"`
 
+	// Connected contact
+	Contact *WebitelChatPeer `json:"contact,omitempty"`
+
 	// Chat gateway
 	Gateway *WebitelChatPeer `json:"gateway,omitempty"`
 
@@ -33,7 +36,7 @@ type WebitelChatAgentChat struct {
 	// Chat first message
 	LastMessage *WebitelChatMessage `json:"last_message,omitempty"`
 
-	// Queue name (unreal)
+	// Queue name
 	Queue *WebitelChatPeer `json:"queue,omitempty"`
 
 	// Chat time length
@@ -41,11 +44,19 @@ type WebitelChatAgentChat struct {
 
 	// Chat title
 	Title string `json:"title,omitempty"`
+
+	// Special attribute for the closed-active chats (on fact closed but should be on active tab on the front-end)
+	// can be true only when close reason = any("client_leave", "client_timeout", "agent_timeout", "silence_timeout")
+	UnprocessedClose bool `json:"unprocessed_close,omitempty"`
 }
 
 // Validate validates this webitel chat agent chat
 func (m *WebitelChatAgentChat) Validate(formats strfmt.Registry) error {
 	var res []error
+
+	if err := m.validateContact(formats); err != nil {
+		res = append(res, err)
+	}
 
 	if err := m.validateGateway(formats); err != nil {
 		res = append(res, err)
@@ -62,6 +73,25 @@ func (m *WebitelChatAgentChat) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *WebitelChatAgentChat) validateContact(formats strfmt.Registry) error {
+	if swag.IsZero(m.Contact) { // not required
+		return nil
+	}
+
+	if m.Contact != nil {
+		if err := m.Contact.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("contact")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("contact")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -126,6 +156,10 @@ func (m *WebitelChatAgentChat) validateQueue(formats strfmt.Registry) error {
 func (m *WebitelChatAgentChat) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.contextValidateContact(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.contextValidateGateway(ctx, formats); err != nil {
 		res = append(res, err)
 	}
@@ -141,6 +175,27 @@ func (m *WebitelChatAgentChat) ContextValidate(ctx context.Context, formats strf
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *WebitelChatAgentChat) contextValidateContact(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Contact != nil {
+
+		if swag.IsZero(m.Contact) { // not required
+			return nil
+		}
+
+		if err := m.Contact.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("contact")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("contact")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

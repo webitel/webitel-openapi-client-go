@@ -31,14 +31,7 @@ func (o *ForecastCalculationServiceUpdateForecastCalculationReader) ReadResponse
 		}
 		return result, nil
 	default:
-		result := NewForecastCalculationServiceUpdateForecastCalculationDefault(response.Code())
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		if response.Code()/100 == 2 {
-			return result, nil
-		}
-		return nil, result
+		return nil, runtime.NewAPIError("[PUT /wfm/lookups/forecast_calculation/{item.id}] ForecastCalculationService_UpdateForecastCalculation", response, response.Code())
 	}
 }
 
@@ -103,80 +96,6 @@ func (o *ForecastCalculationServiceUpdateForecastCalculationOK) GetPayload() *mo
 func (o *ForecastCalculationServiceUpdateForecastCalculationOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.WfmUpdateForecastCalculationResponse)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
-// NewForecastCalculationServiceUpdateForecastCalculationDefault creates a ForecastCalculationServiceUpdateForecastCalculationDefault with default headers values
-func NewForecastCalculationServiceUpdateForecastCalculationDefault(code int) *ForecastCalculationServiceUpdateForecastCalculationDefault {
-	return &ForecastCalculationServiceUpdateForecastCalculationDefault{
-		_statusCode: code,
-	}
-}
-
-/*
-ForecastCalculationServiceUpdateForecastCalculationDefault describes a response with status code -1, with default header values.
-
-An unexpected error response.
-*/
-type ForecastCalculationServiceUpdateForecastCalculationDefault struct {
-	_statusCode int
-
-	Payload *models.RPCStatus
-}
-
-// IsSuccess returns true when this forecast calculation service update forecast calculation default response has a 2xx status code
-func (o *ForecastCalculationServiceUpdateForecastCalculationDefault) IsSuccess() bool {
-	return o._statusCode/100 == 2
-}
-
-// IsRedirect returns true when this forecast calculation service update forecast calculation default response has a 3xx status code
-func (o *ForecastCalculationServiceUpdateForecastCalculationDefault) IsRedirect() bool {
-	return o._statusCode/100 == 3
-}
-
-// IsClientError returns true when this forecast calculation service update forecast calculation default response has a 4xx status code
-func (o *ForecastCalculationServiceUpdateForecastCalculationDefault) IsClientError() bool {
-	return o._statusCode/100 == 4
-}
-
-// IsServerError returns true when this forecast calculation service update forecast calculation default response has a 5xx status code
-func (o *ForecastCalculationServiceUpdateForecastCalculationDefault) IsServerError() bool {
-	return o._statusCode/100 == 5
-}
-
-// IsCode returns true when this forecast calculation service update forecast calculation default response a status code equal to that given
-func (o *ForecastCalculationServiceUpdateForecastCalculationDefault) IsCode(code int) bool {
-	return o._statusCode == code
-}
-
-// Code gets the status code for the forecast calculation service update forecast calculation default response
-func (o *ForecastCalculationServiceUpdateForecastCalculationDefault) Code() int {
-	return o._statusCode
-}
-
-func (o *ForecastCalculationServiceUpdateForecastCalculationDefault) Error() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[PUT /wfm/lookups/forecast_calculation/{item.id}][%d] ForecastCalculationService_UpdateForecastCalculation default %s", o._statusCode, payload)
-}
-
-func (o *ForecastCalculationServiceUpdateForecastCalculationDefault) String() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[PUT /wfm/lookups/forecast_calculation/{item.id}][%d] ForecastCalculationService_UpdateForecastCalculation default %s", o._statusCode, payload)
-}
-
-func (o *ForecastCalculationServiceUpdateForecastCalculationDefault) GetPayload() *models.RPCStatus {
-	return o.Payload
-}
-
-func (o *ForecastCalculationServiceUpdateForecastCalculationDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.RPCStatus)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

@@ -23,21 +23,32 @@ import (
 
 	"github.com/webitel/webitel-openapi-client-go/client/access_store"
 	"github.com/webitel/webitel-openapi-client-go/client/agent_absence_service"
-	"github.com/webitel/webitel-openapi-client-go/client/agent_chats_service"
+	"github.com/webitel/webitel-openapi-client-go/client/agent_chat_service"
 	"github.com/webitel/webitel-openapi-client-go/client/agent_pause_cause_service"
 	"github.com/webitel/webitel-openapi-client-go/client/agent_service"
 	"github.com/webitel/webitel-openapi-client-go/client/agent_skill_service"
 	"github.com/webitel/webitel-openapi-client-go/client/agent_team_service"
 	"github.com/webitel/webitel-openapi-client-go/client/agent_working_conditions_service"
+	"github.com/webitel/webitel-openapi-client-go/client/agent_working_schedule_service"
+	"github.com/webitel/webitel-openapi-client-go/client/articles"
 	"github.com/webitel/webitel-openapi-client-go/client/audit_form_service"
 	"github.com/webitel/webitel-openapi-client-go/client/auth"
 	"github.com/webitel/webitel-openapi-client-go/client/backend_profile_service"
 	"github.com/webitel/webitel-openapi-client-go/client/bucket_service"
 	"github.com/webitel/webitel-openapi-client-go/client/calendar_service"
 	"github.com/webitel/webitel-openapi-client-go/client/call_service"
+	"github.com/webitel/webitel-openapi-client-go/client/case_comments"
+	"github.com/webitel/webitel-openapi-client-go/client/case_communications"
+	"github.com/webitel/webitel-openapi-client-go/client/case_files"
+	"github.com/webitel/webitel-openapi-client-go/client/case_links"
+	"github.com/webitel/webitel-openapi-client-go/client/case_timeline"
+	"github.com/webitel/webitel-openapi-client-go/client/cases"
 	"github.com/webitel/webitel-openapi-client-go/client/catalog"
+	"github.com/webitel/webitel-openapi-client-go/client/catalogs"
 	"github.com/webitel/webitel-openapi-client-go/client/chat_helper_service"
 	"github.com/webitel/webitel-openapi-client-go/client/classes"
+	"github.com/webitel/webitel-openapi-client-go/client/close_reason_groups"
+	"github.com/webitel/webitel-openapi-client-go/client/close_reasons"
 	"github.com/webitel/webitel-openapi-client-go/client/cognitive_profile_service"
 	"github.com/webitel/webitel-openapi-client-go/client/communication_type_service"
 	"github.com/webitel/webitel-openapi-client-go/client/config_service"
@@ -47,15 +58,22 @@ import (
 	"github.com/webitel/webitel-openapi-client-go/client/contacts_chat_catalog"
 	"github.com/webitel/webitel-openapi-client-go/client/customers"
 	"github.com/webitel/webitel-openapi-client-go/client/devices"
+	"github.com/webitel/webitel-openapi-client-go/client/dictionaries"
 	"github.com/webitel/webitel-openapi-client-go/client/domains"
+	"github.com/webitel/webitel-openapi-client-go/client/dynamic_conditions"
+	"github.com/webitel/webitel-openapi-client-go/client/dynamic_groups"
 	"github.com/webitel/webitel-openapi-client-go/client/email_profile_service"
 	"github.com/webitel/webitel-openapi-client-go/client/emails"
+	"github.com/webitel/webitel-openapi-client-go/client/extensions"
+	"github.com/webitel/webitel-openapi-client-go/client/f_t_s_service"
+	"github.com/webitel/webitel-openapi-client-go/client/file_policies_service"
 	"github.com/webitel/webitel-openapi-client-go/client/file_service"
 	"github.com/webitel/webitel-openapi-client-go/client/file_transcript_service"
 	"github.com/webitel/webitel-openapi-client-go/client/forecast_calculation_service"
 	"github.com/webitel/webitel-openapi-client-go/client/groups"
 	"github.com/webitel/webitel-openapi-client-go/client/i_m_clients"
 	"github.com/webitel/webitel-openapi-client-go/client/import_template_service"
+	"github.com/webitel/webitel-openapi-client-go/client/knowledgebase_search"
 	"github.com/webitel/webitel-openapi-client-go/client/labels"
 	"github.com/webitel/webitel-openapi-client-go/client/ldap"
 	"github.com/webitel/webitel-openapi-client-go/client/list_service"
@@ -63,6 +81,7 @@ import (
 	"github.com/webitel/webitel-openapi-client-go/client/managers"
 	"github.com/webitel/webitel-openapi-client-go/client/media_file_service"
 	"github.com/webitel/webitel-openapi-client-go/client/member_service"
+	"github.com/webitel/webitel-openapi-client-go/client/messages_service"
 	"github.com/webitel/webitel-openapi-client-go/client/o_auth2_federation"
 	"github.com/webitel/webitel-openapi-client-go/client/outbound_resource_group_service"
 	"github.com/webitel/webitel-openapi-client-go/client/outbound_resource_service"
@@ -71,28 +90,40 @@ import (
 	"github.com/webitel/webitel-openapi-client-go/client/phones"
 	"github.com/webitel/webitel-openapi-client-go/client/presence"
 	"github.com/webitel/webitel-openapi-client-go/client/preset_query_service"
+	"github.com/webitel/webitel-openapi-client-go/client/priorities"
 	"github.com/webitel/webitel-openapi-client-go/client/queue_bucket_service"
 	"github.com/webitel/webitel-openapi-client-go/client/queue_hook_service"
 	"github.com/webitel/webitel-openapi-client-go/client/queue_resources_service"
 	"github.com/webitel/webitel-openapi-client-go/client/queue_service"
 	"github.com/webitel/webitel-openapi-client-go/client/queue_skill_service"
+	"github.com/webitel/webitel-openapi-client-go/client/quick_replies_service"
 	"github.com/webitel/webitel-openapi-client-go/client/region_service"
+	"github.com/webitel/webitel-openapi-client-go/client/related_cases"
 	"github.com/webitel/webitel-openapi-client-go/client/roles"
 	"github.com/webitel/webitel-openapi-client-go/client/routing_chat_plan_service"
 	"github.com/webitel/webitel-openapi-client-go/client/routing_outbound_call_service"
 	"github.com/webitel/webitel-openapi-client-go/client/routing_schema_service"
 	"github.com/webitel/webitel-openapi-client-go/client/routing_variable_service"
+	"github.com/webitel/webitel-openapi-client-go/client/s_l_as"
 	"github.com/webitel/webitel-openapi-client-go/client/schema_variables_service"
 	"github.com/webitel/webitel-openapi-client-go/client/schema_version_service"
+	"github.com/webitel/webitel-openapi-client-go/client/services"
 	"github.com/webitel/webitel-openapi-client-go/client/shift_template_service"
 	"github.com/webitel/webitel-openapi-client-go/client/skill_service"
+	"github.com/webitel/webitel-openapi-client-go/client/sla_conditions"
+	"github.com/webitel/webitel-openapi-client-go/client/sources"
+	"github.com/webitel/webitel-openapi-client-go/client/spaces"
+	"github.com/webitel/webitel-openapi-client-go/client/status_conditions"
+	"github.com/webitel/webitel-openapi-client-go/client/statuses"
 	"github.com/webitel/webitel-openapi-client-go/client/system_setting_service"
+	"github.com/webitel/webitel-openapi-client-go/client/tags"
 	"github.com/webitel/webitel-openapi-client-go/client/team_hook_service"
 	"github.com/webitel/webitel-openapi-client-go/client/team_trigger_service"
 	"github.com/webitel/webitel-openapi-client-go/client/timeline"
 	"github.com/webitel/webitel-openapi-client-go/client/timezones"
 	"github.com/webitel/webitel-openapi-client-go/client/trigger_service"
 	"github.com/webitel/webitel-openapi-client-go/client/two_factor_authentication"
+	"github.com/webitel/webitel-openapi-client-go/client/types"
 	"github.com/webitel/webitel-openapi-client-go/client/user_access_tokens"
 	"github.com/webitel/webitel-openapi-client-go/client/user_helper_service"
 	"github.com/webitel/webitel-openapi-client-go/client/user_settings"
@@ -100,6 +131,7 @@ import (
 	"github.com/webitel/webitel-openapi-client-go/client/variables"
 	"github.com/webitel/webitel-openapi-client-go/client/web_hook_service"
 	"github.com/webitel/webitel-openapi-client-go/client/working_condition_service"
+	"github.com/webitel/webitel-openapi-client-go/client/working_schedule_service"
 )
 
 // Default webitel API HTTP client.
@@ -149,21 +181,32 @@ func New(transport runtime.ClientTransport, cfg *TransportConfig, formats strfmt
 	cli.formats = formats
 	cli.AccessStore = access_store.New(transport, formats)
 	cli.AgentAbsenceService = agent_absence_service.New(transport, formats)
-	cli.AgentChatsService = agent_chats_service.New(transport, formats)
+	cli.AgentChatService = agent_chat_service.New(transport, formats)
 	cli.AgentPauseCauseService = agent_pause_cause_service.New(transport, formats)
 	cli.AgentService = agent_service.New(transport, formats)
 	cli.AgentSkillService = agent_skill_service.New(transport, formats)
 	cli.AgentTeamService = agent_team_service.New(transport, formats)
 	cli.AgentWorkingConditionsService = agent_working_conditions_service.New(transport, formats)
+	cli.AgentWorkingScheduleService = agent_working_schedule_service.New(transport, formats)
+	cli.Articles = articles.New(transport, formats)
 	cli.AuditFormService = audit_form_service.New(transport, formats)
 	cli.Auth = auth.New(transport, formats)
 	cli.BackendProfileService = backend_profile_service.New(transport, formats)
 	cli.BucketService = bucket_service.New(transport, formats)
 	cli.CalendarService = calendar_service.New(transport, formats)
 	cli.CallService = call_service.New(transport, formats)
+	cli.CaseComments = case_comments.New(transport, formats)
+	cli.CaseCommunications = case_communications.New(transport, formats)
+	cli.CaseFiles = case_files.New(transport, formats)
+	cli.CaseLinks = case_links.New(transport, formats)
+	cli.CaseTimeline = case_timeline.New(transport, formats)
+	cli.Cases = cases.New(transport, formats)
 	cli.Catalog = catalog.New(transport, formats)
+	cli.Catalogs = catalogs.New(transport, formats)
 	cli.ChatHelperService = chat_helper_service.New(transport, formats)
 	cli.Classes = classes.New(transport, formats)
+	cli.CloseReasonGroups = close_reason_groups.New(transport, formats)
+	cli.CloseReasons = close_reasons.New(transport, formats)
 	cli.CognitiveProfileService = cognitive_profile_service.New(transport, formats)
 	cli.CommunicationTypeService = communication_type_service.New(transport, formats)
 	cli.ConfigService = config_service.New(transport, formats)
@@ -173,15 +216,22 @@ func New(transport runtime.ClientTransport, cfg *TransportConfig, formats strfmt
 	cli.ContactsChatCatalog = contacts_chat_catalog.New(transport, formats)
 	cli.Customers = customers.New(transport, formats)
 	cli.Devices = devices.New(transport, formats)
+	cli.Dictionaries = dictionaries.New(transport, formats)
 	cli.Domains = domains.New(transport, formats)
+	cli.DynamicConditions = dynamic_conditions.New(transport, formats)
+	cli.DynamicGroups = dynamic_groups.New(transport, formats)
 	cli.EmailProfileService = email_profile_service.New(transport, formats)
 	cli.Emails = emails.New(transport, formats)
+	cli.Extensions = extensions.New(transport, formats)
+	cli.FtsService = f_t_s_service.New(transport, formats)
+	cli.FilePoliciesService = file_policies_service.New(transport, formats)
 	cli.FileService = file_service.New(transport, formats)
 	cli.FileTranscriptService = file_transcript_service.New(transport, formats)
 	cli.ForecastCalculationService = forecast_calculation_service.New(transport, formats)
 	cli.Groups = groups.New(transport, formats)
 	cli.ImClients = i_m_clients.New(transport, formats)
 	cli.ImportTemplateService = import_template_service.New(transport, formats)
+	cli.KnowledgebaseSearch = knowledgebase_search.New(transport, formats)
 	cli.Labels = labels.New(transport, formats)
 	cli.LDAP = ldap.New(transport, formats)
 	cli.ListService = list_service.New(transport, formats)
@@ -189,6 +239,7 @@ func New(transport runtime.ClientTransport, cfg *TransportConfig, formats strfmt
 	cli.Managers = managers.New(transport, formats)
 	cli.MediaFileService = media_file_service.New(transport, formats)
 	cli.MemberService = member_service.New(transport, formats)
+	cli.MessagesService = messages_service.New(transport, formats)
 	cli.OAuth2Federation = o_auth2_federation.New(transport, formats)
 	cli.OutboundResourceGroupService = outbound_resource_group_service.New(transport, formats)
 	cli.OutboundResourceService = outbound_resource_service.New(transport, formats)
@@ -197,28 +248,40 @@ func New(transport runtime.ClientTransport, cfg *TransportConfig, formats strfmt
 	cli.Phones = phones.New(transport, formats)
 	cli.Presence = presence.New(transport, formats)
 	cli.PresetQueryService = preset_query_service.New(transport, formats)
+	cli.Priorities = priorities.New(transport, formats)
 	cli.QueueBucketService = queue_bucket_service.New(transport, formats)
 	cli.QueueHookService = queue_hook_service.New(transport, formats)
 	cli.QueueResourcesService = queue_resources_service.New(transport, formats)
 	cli.QueueService = queue_service.New(transport, formats)
 	cli.QueueSkillService = queue_skill_service.New(transport, formats)
+	cli.QuickRepliesService = quick_replies_service.New(transport, formats)
 	cli.RegionService = region_service.New(transport, formats)
+	cli.RelatedCases = related_cases.New(transport, formats)
 	cli.Roles = roles.New(transport, formats)
 	cli.RoutingChatPlanService = routing_chat_plan_service.New(transport, formats)
 	cli.RoutingOutboundCallService = routing_outbound_call_service.New(transport, formats)
 	cli.RoutingSchemaService = routing_schema_service.New(transport, formats)
 	cli.RoutingVariableService = routing_variable_service.New(transport, formats)
+	cli.SlAs = s_l_as.New(transport, formats)
 	cli.SchemaVariablesService = schema_variables_service.New(transport, formats)
 	cli.SchemaVersionService = schema_version_service.New(transport, formats)
+	cli.Services = services.New(transport, formats)
 	cli.ShiftTemplateService = shift_template_service.New(transport, formats)
 	cli.SkillService = skill_service.New(transport, formats)
+	cli.SLAConditions = sla_conditions.New(transport, formats)
+	cli.Sources = sources.New(transport, formats)
+	cli.Spaces = spaces.New(transport, formats)
+	cli.StatusConditions = status_conditions.New(transport, formats)
+	cli.Statuses = statuses.New(transport, formats)
 	cli.SystemSettingService = system_setting_service.New(transport, formats)
+	cli.Tags = tags.New(transport, formats)
 	cli.TeamHookService = team_hook_service.New(transport, formats)
 	cli.TeamTriggerService = team_trigger_service.New(transport, formats)
 	cli.Timeline = timeline.New(transport, formats)
 	cli.Timezones = timezones.New(transport, formats)
 	cli.TriggerService = trigger_service.New(transport, formats)
 	cli.TwoFactorAuthentication = two_factor_authentication.New(transport, formats)
+	cli.Types = types.New(transport, formats)
 	cli.UserAccessTokens = user_access_tokens.New(transport, formats)
 	cli.UserHelperService = user_helper_service.New(transport, formats)
 	cli.UserSettings = user_settings.New(transport, formats)
@@ -226,6 +289,7 @@ func New(transport runtime.ClientTransport, cfg *TransportConfig, formats strfmt
 	cli.Variables = variables.New(transport, formats)
 	cli.WebHookService = web_hook_service.New(transport, formats)
 	cli.WorkingConditionService = working_condition_service.New(transport, formats)
+	cli.WorkingScheduleService = working_schedule_service.New(transport, formats)
 	return cli
 }
 
@@ -315,7 +379,7 @@ type WebitelAPI struct {
 
 	AgentAbsenceService agent_absence_service.ClientService
 
-	AgentChatsService agent_chats_service.ClientService
+	AgentChatService agent_chat_service.ClientService
 
 	AgentPauseCauseService agent_pause_cause_service.ClientService
 
@@ -326,6 +390,10 @@ type WebitelAPI struct {
 	AgentTeamService agent_team_service.ClientService
 
 	AgentWorkingConditionsService agent_working_conditions_service.ClientService
+
+	AgentWorkingScheduleService agent_working_schedule_service.ClientService
+
+	Articles articles.ClientService
 
 	AuditFormService audit_form_service.ClientService
 
@@ -339,11 +407,29 @@ type WebitelAPI struct {
 
 	CallService call_service.ClientService
 
+	CaseComments case_comments.ClientService
+
+	CaseCommunications case_communications.ClientService
+
+	CaseFiles case_files.ClientService
+
+	CaseLinks case_links.ClientService
+
+	CaseTimeline case_timeline.ClientService
+
+	Cases cases.ClientService
+
 	Catalog catalog.ClientService
+
+	Catalogs catalogs.ClientService
 
 	ChatHelperService chat_helper_service.ClientService
 
 	Classes classes.ClientService
+
+	CloseReasonGroups close_reason_groups.ClientService
+
+	CloseReasons close_reasons.ClientService
 
 	CognitiveProfileService cognitive_profile_service.ClientService
 
@@ -363,11 +449,23 @@ type WebitelAPI struct {
 
 	Devices devices.ClientService
 
+	Dictionaries dictionaries.ClientService
+
 	Domains domains.ClientService
+
+	DynamicConditions dynamic_conditions.ClientService
+
+	DynamicGroups dynamic_groups.ClientService
 
 	EmailProfileService email_profile_service.ClientService
 
 	Emails emails.ClientService
+
+	Extensions extensions.ClientService
+
+	FtsService f_t_s_service.ClientService
+
+	FilePoliciesService file_policies_service.ClientService
 
 	FileService file_service.ClientService
 
@@ -380,6 +478,8 @@ type WebitelAPI struct {
 	ImClients i_m_clients.ClientService
 
 	ImportTemplateService import_template_service.ClientService
+
+	KnowledgebaseSearch knowledgebase_search.ClientService
 
 	Labels labels.ClientService
 
@@ -394,6 +494,8 @@ type WebitelAPI struct {
 	MediaFileService media_file_service.ClientService
 
 	MemberService member_service.ClientService
+
+	MessagesService messages_service.ClientService
 
 	OAuth2Federation o_auth2_federation.ClientService
 
@@ -411,6 +513,8 @@ type WebitelAPI struct {
 
 	PresetQueryService preset_query_service.ClientService
 
+	Priorities priorities.ClientService
+
 	QueueBucketService queue_bucket_service.ClientService
 
 	QueueHookService queue_hook_service.ClientService
@@ -421,7 +525,11 @@ type WebitelAPI struct {
 
 	QueueSkillService queue_skill_service.ClientService
 
+	QuickRepliesService quick_replies_service.ClientService
+
 	RegionService region_service.ClientService
+
+	RelatedCases related_cases.ClientService
 
 	Roles roles.ClientService
 
@@ -433,15 +541,31 @@ type WebitelAPI struct {
 
 	RoutingVariableService routing_variable_service.ClientService
 
+	SlAs s_l_as.ClientService
+
 	SchemaVariablesService schema_variables_service.ClientService
 
 	SchemaVersionService schema_version_service.ClientService
+
+	Services services.ClientService
 
 	ShiftTemplateService shift_template_service.ClientService
 
 	SkillService skill_service.ClientService
 
+	SLAConditions sla_conditions.ClientService
+
+	Sources sources.ClientService
+
+	Spaces spaces.ClientService
+
+	StatusConditions status_conditions.ClientService
+
+	Statuses statuses.ClientService
+
 	SystemSettingService system_setting_service.ClientService
+
+	Tags tags.ClientService
 
 	TeamHookService team_hook_service.ClientService
 
@@ -454,6 +578,8 @@ type WebitelAPI struct {
 	TriggerService trigger_service.ClientService
 
 	TwoFactorAuthentication two_factor_authentication.ClientService
+
+	Types types.ClientService
 
 	UserAccessTokens user_access_tokens.ClientService
 
@@ -469,6 +595,8 @@ type WebitelAPI struct {
 
 	WorkingConditionService working_condition_service.ClientService
 
+	WorkingScheduleService working_schedule_service.ClientService
+
 	Transport runtime.ClientTransport
 	// cfg is private because it should only be read or set (and then the transport must be created again)
 	cfg     *TransportConfig
@@ -480,21 +608,32 @@ func (c *WebitelAPI) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
 	c.AccessStore.SetTransport(transport)
 	c.AgentAbsenceService.SetTransport(transport)
-	c.AgentChatsService.SetTransport(transport)
+	c.AgentChatService.SetTransport(transport)
 	c.AgentPauseCauseService.SetTransport(transport)
 	c.AgentService.SetTransport(transport)
 	c.AgentSkillService.SetTransport(transport)
 	c.AgentTeamService.SetTransport(transport)
 	c.AgentWorkingConditionsService.SetTransport(transport)
+	c.AgentWorkingScheduleService.SetTransport(transport)
+	c.Articles.SetTransport(transport)
 	c.AuditFormService.SetTransport(transport)
 	c.Auth.SetTransport(transport)
 	c.BackendProfileService.SetTransport(transport)
 	c.BucketService.SetTransport(transport)
 	c.CalendarService.SetTransport(transport)
 	c.CallService.SetTransport(transport)
+	c.CaseComments.SetTransport(transport)
+	c.CaseCommunications.SetTransport(transport)
+	c.CaseFiles.SetTransport(transport)
+	c.CaseLinks.SetTransport(transport)
+	c.CaseTimeline.SetTransport(transport)
+	c.Cases.SetTransport(transport)
 	c.Catalog.SetTransport(transport)
+	c.Catalogs.SetTransport(transport)
 	c.ChatHelperService.SetTransport(transport)
 	c.Classes.SetTransport(transport)
+	c.CloseReasonGroups.SetTransport(transport)
+	c.CloseReasons.SetTransport(transport)
 	c.CognitiveProfileService.SetTransport(transport)
 	c.CommunicationTypeService.SetTransport(transport)
 	c.ConfigService.SetTransport(transport)
@@ -504,15 +643,22 @@ func (c *WebitelAPI) SetTransport(transport runtime.ClientTransport) {
 	c.ContactsChatCatalog.SetTransport(transport)
 	c.Customers.SetTransport(transport)
 	c.Devices.SetTransport(transport)
+	c.Dictionaries.SetTransport(transport)
 	c.Domains.SetTransport(transport)
+	c.DynamicConditions.SetTransport(transport)
+	c.DynamicGroups.SetTransport(transport)
 	c.EmailProfileService.SetTransport(transport)
 	c.Emails.SetTransport(transport)
+	c.Extensions.SetTransport(transport)
+	c.FtsService.SetTransport(transport)
+	c.FilePoliciesService.SetTransport(transport)
 	c.FileService.SetTransport(transport)
 	c.FileTranscriptService.SetTransport(transport)
 	c.ForecastCalculationService.SetTransport(transport)
 	c.Groups.SetTransport(transport)
 	c.ImClients.SetTransport(transport)
 	c.ImportTemplateService.SetTransport(transport)
+	c.KnowledgebaseSearch.SetTransport(transport)
 	c.Labels.SetTransport(transport)
 	c.LDAP.SetTransport(transport)
 	c.ListService.SetTransport(transport)
@@ -520,6 +666,7 @@ func (c *WebitelAPI) SetTransport(transport runtime.ClientTransport) {
 	c.Managers.SetTransport(transport)
 	c.MediaFileService.SetTransport(transport)
 	c.MemberService.SetTransport(transport)
+	c.MessagesService.SetTransport(transport)
 	c.OAuth2Federation.SetTransport(transport)
 	c.OutboundResourceGroupService.SetTransport(transport)
 	c.OutboundResourceService.SetTransport(transport)
@@ -528,28 +675,40 @@ func (c *WebitelAPI) SetTransport(transport runtime.ClientTransport) {
 	c.Phones.SetTransport(transport)
 	c.Presence.SetTransport(transport)
 	c.PresetQueryService.SetTransport(transport)
+	c.Priorities.SetTransport(transport)
 	c.QueueBucketService.SetTransport(transport)
 	c.QueueHookService.SetTransport(transport)
 	c.QueueResourcesService.SetTransport(transport)
 	c.QueueService.SetTransport(transport)
 	c.QueueSkillService.SetTransport(transport)
+	c.QuickRepliesService.SetTransport(transport)
 	c.RegionService.SetTransport(transport)
+	c.RelatedCases.SetTransport(transport)
 	c.Roles.SetTransport(transport)
 	c.RoutingChatPlanService.SetTransport(transport)
 	c.RoutingOutboundCallService.SetTransport(transport)
 	c.RoutingSchemaService.SetTransport(transport)
 	c.RoutingVariableService.SetTransport(transport)
+	c.SlAs.SetTransport(transport)
 	c.SchemaVariablesService.SetTransport(transport)
 	c.SchemaVersionService.SetTransport(transport)
+	c.Services.SetTransport(transport)
 	c.ShiftTemplateService.SetTransport(transport)
 	c.SkillService.SetTransport(transport)
+	c.SLAConditions.SetTransport(transport)
+	c.Sources.SetTransport(transport)
+	c.Spaces.SetTransport(transport)
+	c.StatusConditions.SetTransport(transport)
+	c.Statuses.SetTransport(transport)
 	c.SystemSettingService.SetTransport(transport)
+	c.Tags.SetTransport(transport)
 	c.TeamHookService.SetTransport(transport)
 	c.TeamTriggerService.SetTransport(transport)
 	c.Timeline.SetTransport(transport)
 	c.Timezones.SetTransport(transport)
 	c.TriggerService.SetTransport(transport)
 	c.TwoFactorAuthentication.SetTransport(transport)
+	c.Types.SetTransport(transport)
 	c.UserAccessTokens.SetTransport(transport)
 	c.UserHelperService.SetTransport(transport)
 	c.UserSettings.SetTransport(transport)
@@ -557,6 +716,7 @@ func (c *WebitelAPI) SetTransport(transport runtime.ClientTransport) {
 	c.Variables.SetTransport(transport)
 	c.WebHookService.SetTransport(transport)
 	c.WorkingConditionService.SetTransport(transport)
+	c.WorkingScheduleService.SetTransport(transport)
 }
 
 // WithRetries sets retry parameters and returns the client

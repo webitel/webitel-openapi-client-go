@@ -31,14 +31,7 @@ func (o *WorkingConditionServiceCreateWorkingConditionReader) ReadResponse(respo
 		}
 		return result, nil
 	default:
-		result := NewWorkingConditionServiceCreateWorkingConditionDefault(response.Code())
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		if response.Code()/100 == 2 {
-			return result, nil
-		}
-		return nil, result
+		return nil, runtime.NewAPIError("[POST /wfm/lookups/working_conditions] WorkingConditionService_CreateWorkingCondition", response, response.Code())
 	}
 }
 
@@ -103,80 +96,6 @@ func (o *WorkingConditionServiceCreateWorkingConditionOK) GetPayload() *models.W
 func (o *WorkingConditionServiceCreateWorkingConditionOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.WfmCreateWorkingConditionResponse)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
-// NewWorkingConditionServiceCreateWorkingConditionDefault creates a WorkingConditionServiceCreateWorkingConditionDefault with default headers values
-func NewWorkingConditionServiceCreateWorkingConditionDefault(code int) *WorkingConditionServiceCreateWorkingConditionDefault {
-	return &WorkingConditionServiceCreateWorkingConditionDefault{
-		_statusCode: code,
-	}
-}
-
-/*
-WorkingConditionServiceCreateWorkingConditionDefault describes a response with status code -1, with default header values.
-
-An unexpected error response.
-*/
-type WorkingConditionServiceCreateWorkingConditionDefault struct {
-	_statusCode int
-
-	Payload *models.RPCStatus
-}
-
-// IsSuccess returns true when this working condition service create working condition default response has a 2xx status code
-func (o *WorkingConditionServiceCreateWorkingConditionDefault) IsSuccess() bool {
-	return o._statusCode/100 == 2
-}
-
-// IsRedirect returns true when this working condition service create working condition default response has a 3xx status code
-func (o *WorkingConditionServiceCreateWorkingConditionDefault) IsRedirect() bool {
-	return o._statusCode/100 == 3
-}
-
-// IsClientError returns true when this working condition service create working condition default response has a 4xx status code
-func (o *WorkingConditionServiceCreateWorkingConditionDefault) IsClientError() bool {
-	return o._statusCode/100 == 4
-}
-
-// IsServerError returns true when this working condition service create working condition default response has a 5xx status code
-func (o *WorkingConditionServiceCreateWorkingConditionDefault) IsServerError() bool {
-	return o._statusCode/100 == 5
-}
-
-// IsCode returns true when this working condition service create working condition default response a status code equal to that given
-func (o *WorkingConditionServiceCreateWorkingConditionDefault) IsCode(code int) bool {
-	return o._statusCode == code
-}
-
-// Code gets the status code for the working condition service create working condition default response
-func (o *WorkingConditionServiceCreateWorkingConditionDefault) Code() int {
-	return o._statusCode
-}
-
-func (o *WorkingConditionServiceCreateWorkingConditionDefault) Error() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[POST /wfm/lookups/working_conditions][%d] WorkingConditionService_CreateWorkingCondition default %s", o._statusCode, payload)
-}
-
-func (o *WorkingConditionServiceCreateWorkingConditionDefault) String() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[POST /wfm/lookups/working_conditions][%d] WorkingConditionService_CreateWorkingCondition default %s", o._statusCode, payload)
-}
-
-func (o *WorkingConditionServiceCreateWorkingConditionDefault) GetPayload() *models.RPCStatus {
-	return o.Payload
-}
-
-func (o *WorkingConditionServiceCreateWorkingConditionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.RPCStatus)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

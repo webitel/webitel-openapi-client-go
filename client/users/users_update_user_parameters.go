@@ -14,6 +14,7 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 
 	"github.com/webitel/webitel-openapi-client-go/models"
 )
@@ -63,8 +64,17 @@ UsersUpdateUserParams contains all the parameters to send to the API endpoint
 */
 type UsersUpdateUserParams struct {
 
-	// Body.
-	Body *models.APIUsersUpdateUserBody
+	/* Fields.
+
+	   PATCH: partial update
+	*/
+	Fields []string
+
+	/* User.
+
+	   body: modifications/changes
+	*/
+	User *models.UsersUpdateUserParamsBody
 
 	/* UserID.
 
@@ -127,15 +137,26 @@ func (o *UsersUpdateUserParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
-// WithBody adds the body to the users update user params
-func (o *UsersUpdateUserParams) WithBody(body *models.APIUsersUpdateUserBody) *UsersUpdateUserParams {
-	o.SetBody(body)
+// WithFields adds the fields to the users update user params
+func (o *UsersUpdateUserParams) WithFields(fields []string) *UsersUpdateUserParams {
+	o.SetFields(fields)
 	return o
 }
 
-// SetBody adds the body to the users update user params
-func (o *UsersUpdateUserParams) SetBody(body *models.APIUsersUpdateUserBody) {
-	o.Body = body
+// SetFields adds the fields to the users update user params
+func (o *UsersUpdateUserParams) SetFields(fields []string) {
+	o.Fields = fields
+}
+
+// WithUser adds the user to the users update user params
+func (o *UsersUpdateUserParams) WithUser(user *models.UsersUpdateUserParamsBody) *UsersUpdateUserParams {
+	o.SetUser(user)
+	return o
+}
+
+// SetUser adds the user to the users update user params
+func (o *UsersUpdateUserParams) SetUser(user *models.UsersUpdateUserParamsBody) {
+	o.User = user
 }
 
 // WithUserID adds the userID to the users update user params
@@ -156,8 +177,19 @@ func (o *UsersUpdateUserParams) WriteToRequest(r runtime.ClientRequest, reg strf
 		return err
 	}
 	var res []error
-	if o.Body != nil {
-		if err := r.SetBodyParam(o.Body); err != nil {
+
+	if o.Fields != nil {
+
+		// binding items for fields
+		joinedFields := o.bindParamFields(reg)
+
+		// query array param fields
+		if err := r.SetQueryParam("fields", joinedFields...); err != nil {
+			return err
+		}
+	}
+	if o.User != nil {
+		if err := r.SetBodyParam(o.User); err != nil {
 			return err
 		}
 	}
@@ -171,4 +203,21 @@ func (o *UsersUpdateUserParams) WriteToRequest(r runtime.ClientRequest, reg strf
 		return errors.CompositeValidationError(res...)
 	}
 	return nil
+}
+
+// bindParamUsersUpdateUser binds the parameter fields
+func (o *UsersUpdateUserParams) bindParamFields(formats strfmt.Registry) []string {
+	fieldsIR := o.Fields
+
+	var fieldsIC []string
+	for _, fieldsIIR := range fieldsIR { // explode []string
+
+		fieldsIIV := fieldsIIR // string as string
+		fieldsIC = append(fieldsIC, fieldsIIV)
+	}
+
+	// items.CollectionFormat: "multi"
+	fieldsIS := swag.JoinByFormat(fieldsIC, "multi")
+
+	return fieldsIS
 }

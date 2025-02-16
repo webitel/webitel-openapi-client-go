@@ -31,14 +31,7 @@ func (o *ShiftTemplateServiceDeleteShiftTemplateReader) ReadResponse(response ru
 		}
 		return result, nil
 	default:
-		result := NewShiftTemplateServiceDeleteShiftTemplateDefault(response.Code())
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		if response.Code()/100 == 2 {
-			return result, nil
-		}
-		return nil, result
+		return nil, runtime.NewAPIError("[DELETE /wfm/lookups/shift_templates/{id}] ShiftTemplateService_DeleteShiftTemplate", response, response.Code())
 	}
 }
 
@@ -103,80 +96,6 @@ func (o *ShiftTemplateServiceDeleteShiftTemplateOK) GetPayload() *models.WfmDele
 func (o *ShiftTemplateServiceDeleteShiftTemplateOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.WfmDeleteShiftTemplateResponse)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
-// NewShiftTemplateServiceDeleteShiftTemplateDefault creates a ShiftTemplateServiceDeleteShiftTemplateDefault with default headers values
-func NewShiftTemplateServiceDeleteShiftTemplateDefault(code int) *ShiftTemplateServiceDeleteShiftTemplateDefault {
-	return &ShiftTemplateServiceDeleteShiftTemplateDefault{
-		_statusCode: code,
-	}
-}
-
-/*
-ShiftTemplateServiceDeleteShiftTemplateDefault describes a response with status code -1, with default header values.
-
-An unexpected error response.
-*/
-type ShiftTemplateServiceDeleteShiftTemplateDefault struct {
-	_statusCode int
-
-	Payload *models.RPCStatus
-}
-
-// IsSuccess returns true when this shift template service delete shift template default response has a 2xx status code
-func (o *ShiftTemplateServiceDeleteShiftTemplateDefault) IsSuccess() bool {
-	return o._statusCode/100 == 2
-}
-
-// IsRedirect returns true when this shift template service delete shift template default response has a 3xx status code
-func (o *ShiftTemplateServiceDeleteShiftTemplateDefault) IsRedirect() bool {
-	return o._statusCode/100 == 3
-}
-
-// IsClientError returns true when this shift template service delete shift template default response has a 4xx status code
-func (o *ShiftTemplateServiceDeleteShiftTemplateDefault) IsClientError() bool {
-	return o._statusCode/100 == 4
-}
-
-// IsServerError returns true when this shift template service delete shift template default response has a 5xx status code
-func (o *ShiftTemplateServiceDeleteShiftTemplateDefault) IsServerError() bool {
-	return o._statusCode/100 == 5
-}
-
-// IsCode returns true when this shift template service delete shift template default response a status code equal to that given
-func (o *ShiftTemplateServiceDeleteShiftTemplateDefault) IsCode(code int) bool {
-	return o._statusCode == code
-}
-
-// Code gets the status code for the shift template service delete shift template default response
-func (o *ShiftTemplateServiceDeleteShiftTemplateDefault) Code() int {
-	return o._statusCode
-}
-
-func (o *ShiftTemplateServiceDeleteShiftTemplateDefault) Error() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[DELETE /wfm/lookups/shift_templates/{id}][%d] ShiftTemplateService_DeleteShiftTemplate default %s", o._statusCode, payload)
-}
-
-func (o *ShiftTemplateServiceDeleteShiftTemplateDefault) String() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[DELETE /wfm/lookups/shift_templates/{id}][%d] ShiftTemplateService_DeleteShiftTemplate default %s", o._statusCode, payload)
-}
-
-func (o *ShiftTemplateServiceDeleteShiftTemplateDefault) GetPayload() *models.RPCStatus {
-	return o.Payload
-}
-
-func (o *ShiftTemplateServiceDeleteShiftTemplateDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.RPCStatus)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

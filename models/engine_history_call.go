@@ -100,6 +100,9 @@ type EngineHistoryCall struct {
 	// from
 	From *EngineEndpoint `json:"from,omitempty"`
 
+	// from number
+	FromNumber string `json:"from_number,omitempty"`
+
 	// gateway
 	Gateway *EngineLookup `json:"gateway,omitempty"`
 
@@ -201,6 +204,9 @@ type EngineHistoryCall struct {
 
 	// to
 	To *EngineEndpoint `json:"to,omitempty"`
+
+	// to number
+	ToNumber string `json:"to_number,omitempty"`
 
 	// transcripts
 	Transcripts []*EngineTranscriptLookup `json:"transcripts"`

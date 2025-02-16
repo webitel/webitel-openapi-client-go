@@ -71,10 +71,10 @@ type ForecastCalculationServiceExecuteForecastCalculationParams struct {
 	// Format: int64
 	ForecastDataTo *string
 
-	// ID1.
+	// ID.
 	//
 	// Format: int64
-	ID1 string
+	ID string
 
 	// TeamID.
 	//
@@ -156,15 +156,15 @@ func (o *ForecastCalculationServiceExecuteForecastCalculationParams) SetForecast
 	o.ForecastDataTo = forecastDataTo
 }
 
-// WithID1 adds the iD1 to the forecast calculation service execute forecast calculation params
-func (o *ForecastCalculationServiceExecuteForecastCalculationParams) WithID1(iD1 string) *ForecastCalculationServiceExecuteForecastCalculationParams {
-	o.SetID1(iD1)
+// WithID adds the id to the forecast calculation service execute forecast calculation params
+func (o *ForecastCalculationServiceExecuteForecastCalculationParams) WithID(id string) *ForecastCalculationServiceExecuteForecastCalculationParams {
+	o.SetID(id)
 	return o
 }
 
-// SetID1 adds the id1 to the forecast calculation service execute forecast calculation params
-func (o *ForecastCalculationServiceExecuteForecastCalculationParams) SetID1(iD1 string) {
-	o.ID1 = iD1
+// SetID adds the id to the forecast calculation service execute forecast calculation params
+func (o *ForecastCalculationServiceExecuteForecastCalculationParams) SetID(id string) {
+	o.ID = id
 }
 
 // WithTeamID adds the teamID to the forecast calculation service execute forecast calculation params
@@ -220,8 +220,8 @@ func (o *ForecastCalculationServiceExecuteForecastCalculationParams) WriteToRequ
 		}
 	}
 
-	// path param id_1
-	if err := r.SetPathParam("id_1", o.ID1); err != nil {
+	// path param id
+	if err := r.SetPathParam("id", o.ID); err != nil {
 		return err
 	}
 

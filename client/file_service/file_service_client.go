@@ -35,6 +35,8 @@ type ClientService interface {
 	DeleteFiles(body *models.StorageDeleteFilesRequest, opts ...ClientOption) (*DeleteFilesOK, error)
 	DeleteFilesWithParams(params *DeleteFilesParams, opts ...ClientOption) (*DeleteFilesOK, error)
 
+	SearchFiles(params *SearchFilesParams, opts ...ClientOption) (*SearchFilesOK, error)
+
 	SetTransport(transport runtime.ClientTransport)
 }
 
@@ -79,6 +81,46 @@ func (a *Client) DeleteFilesWithParams(params *DeleteFilesParams, opts ...Client
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for DeleteFiles: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+SearchFiles search files API
+*/
+
+func (a *Client) SearchFiles(params *SearchFilesParams, opts ...ClientOption) (*SearchFilesOK, error) {
+	if params == nil {
+		params = NewSearchFilesParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "SearchFiles",
+		Method:             "GET",
+		PathPattern:        "/storage/file",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &SearchFilesReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		if opt != nil {
+			opt(op)
+		}
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*SearchFilesOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for SearchFiles: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 

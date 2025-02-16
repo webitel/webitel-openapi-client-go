@@ -32,6 +32,8 @@ type ClientOption func(*runtime.ClientOperation)
 
 // ClientService is the interface for Client methods
 type ClientService interface {
+	GroupsAddContactsToGroup(params *GroupsAddContactsToGroupParams, opts ...ClientOption) (*GroupsAddContactsToGroupOK, error)
+
 	GroupsCreateGroup(body *models.WebitelContactsCreateGroupRequest, opts ...ClientOption) (*GroupsCreateGroupOK, error)
 	GroupsCreateGroupWithParams(params *GroupsCreateGroupParams, opts ...ClientOption) (*GroupsCreateGroupOK, error)
 
@@ -42,13 +44,55 @@ type ClientService interface {
 
 	GroupsLocateGroup(params *GroupsLocateGroupParams, opts ...ClientOption) (*GroupsLocateGroupOK, error)
 
-	GroupsUpdateGroup(id string, body *models.WebitelContactsGroupsUpdateGroupBody, opts ...ClientOption) (*GroupsUpdateGroupOK, error)
+	GroupsRemoveContactsFromGroup(params *GroupsRemoveContactsFromGroupParams, opts ...ClientOption) (*GroupsRemoveContactsFromGroupOK, error)
+
+	GroupsUpdateGroup(input *models.WebitelContactsInputGroup, id string, opts ...ClientOption) (*GroupsUpdateGroupOK, error)
 	GroupsUpdateGroupWithParams(params *GroupsUpdateGroupParams, opts ...ClientOption) (*GroupsUpdateGroupOK, error)
 
-	GroupsUpdateGroup2(id string, body *models.WebitelContactsGroupsUpdateGroupBody, opts ...ClientOption) (*GroupsUpdateGroup2OK, error)
+	GroupsUpdateGroup2(input *models.WebitelContactsInputGroup, id string, opts ...ClientOption) (*GroupsUpdateGroup2OK, error)
 	GroupsUpdateGroup2WithParams(params *GroupsUpdateGroup2Params, opts ...ClientOption) (*GroupsUpdateGroup2OK, error)
 
 	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+GroupsAddContactsToGroup adds contacts to a group
+*/
+
+func (a *Client) GroupsAddContactsToGroup(params *GroupsAddContactsToGroupParams, opts ...ClientOption) (*GroupsAddContactsToGroupOK, error) {
+	if params == nil {
+		params = NewGroupsAddContactsToGroupParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "Groups_AddContactsToGroup",
+		Method:             "POST",
+		PathPattern:        "/contacts/groups/{group_id}/contact",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GroupsAddContactsToGroupReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		if opt != nil {
+			opt(op)
+		}
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GroupsAddContactsToGroupOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for Groups_AddContactsToGroup: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*
@@ -220,10 +264,50 @@ func (a *Client) GroupsLocateGroup(params *GroupsLocateGroupParams, opts ...Clie
 }
 
 /*
+GroupsRemoveContactsFromGroup removes contacts from a group
+*/
+
+func (a *Client) GroupsRemoveContactsFromGroup(params *GroupsRemoveContactsFromGroupParams, opts ...ClientOption) (*GroupsRemoveContactsFromGroupOK, error) {
+	if params == nil {
+		params = NewGroupsRemoveContactsFromGroupParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "Groups_RemoveContactsFromGroup",
+		Method:             "DELETE",
+		PathPattern:        "/contacts/groups/{group_id}/contact",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GroupsRemoveContactsFromGroupReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		if opt != nil {
+			opt(op)
+		}
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GroupsRemoveContactsFromGroupOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for Groups_RemoveContactsFromGroup: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
 GroupsUpdateGroup updates an existing group
 */
-func (a *Client) GroupsUpdateGroup(id string, body *models.WebitelContactsGroupsUpdateGroupBody, opts ...ClientOption) (*GroupsUpdateGroupOK, error) {
-	params := NewGroupsUpdateGroupParams().WithBody(body).WithID(id)
+func (a *Client) GroupsUpdateGroup(input *models.WebitelContactsInputGroup, id string, opts ...ClientOption) (*GroupsUpdateGroupOK, error) {
+	params := NewGroupsUpdateGroupParams().WithID(id).WithInput(input)
 	return a.GroupsUpdateGroupWithParams(params, opts...)
 }
 
@@ -266,8 +350,8 @@ func (a *Client) GroupsUpdateGroupWithParams(params *GroupsUpdateGroupParams, op
 /*
 GroupsUpdateGroup2 updates an existing group
 */
-func (a *Client) GroupsUpdateGroup2(id string, body *models.WebitelContactsGroupsUpdateGroupBody, opts ...ClientOption) (*GroupsUpdateGroup2OK, error) {
-	params := NewGroupsUpdateGroup2Params().WithBody(body).WithID(id)
+func (a *Client) GroupsUpdateGroup2(input *models.WebitelContactsInputGroup, id string, opts ...ClientOption) (*GroupsUpdateGroup2OK, error) {
+	params := NewGroupsUpdateGroup2Params().WithID(id).WithInput(input)
 	return a.GroupsUpdateGroup2WithParams(params, opts...)
 }
 

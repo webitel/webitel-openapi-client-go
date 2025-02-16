@@ -22,6 +22,9 @@ type WebitelContactsCreateGroupRequest struct {
 	// The description of the group.
 	Description string `json:"description,omitempty"`
 
+	// The enabled status of the group.
+	Enabled bool `json:"enabled,omitempty"`
+
 	// The name of the group.
 	// Required: true
 	Name *string `json:"name"`

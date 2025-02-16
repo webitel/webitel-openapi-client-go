@@ -25,7 +25,7 @@ type ContactsUpdateContactParamsBody struct {
 	About string `json:"about,omitempty"`
 
 	// Publish NEW comment(s) for this Contact.
-	Comments []*WebitelContactsInputComment `json:"comments"`
+	Comments []*WebitelContactsInputComment `json:"comments,omitempty"`
 
 	// The Contact's email address(es).
 	Emails []*WebitelContactsInputEmailAddress `json:"emails"`
@@ -40,7 +40,7 @@ type ContactsUpdateContactParamsBody struct {
 	Labels []*WebitelContactsInputLabel `json:"labels"`
 
 	// A Contact's locale preference(s).
-	Languages []*WebitelContactsInputLanguage `json:"languages"`
+	Languages []*WebitelContactsInputLanguage `json:"languages,omitempty"`
 
 	// The Contact's internal manager(s).
 	Managers []*WebitelContactsInputManager `json:"managers"`
@@ -53,7 +53,7 @@ type ContactsUpdateContactParamsBody struct {
 
 	// Output only. The Contact's photo(s).
 	// Read Only: true
-	Photos []*WebitelContactsInputPhoto `json:"photos"`
+	Photos []*WebitelContactsInputPhoto `json:"photos,omitempty"`
 
 	// The Contact's timezone preference(s).
 	Timezones []*WebitelContactsInputTimezone `json:"timezones"`

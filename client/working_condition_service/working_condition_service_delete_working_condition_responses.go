@@ -31,14 +31,7 @@ func (o *WorkingConditionServiceDeleteWorkingConditionReader) ReadResponse(respo
 		}
 		return result, nil
 	default:
-		result := NewWorkingConditionServiceDeleteWorkingConditionDefault(response.Code())
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		if response.Code()/100 == 2 {
-			return result, nil
-		}
-		return nil, result
+		return nil, runtime.NewAPIError("[DELETE /wfm/lookups/working_conditions/{id}] WorkingConditionService_DeleteWorkingCondition", response, response.Code())
 	}
 }
 
@@ -103,80 +96,6 @@ func (o *WorkingConditionServiceDeleteWorkingConditionOK) GetPayload() *models.W
 func (o *WorkingConditionServiceDeleteWorkingConditionOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.WfmDeleteWorkingConditionResponse)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
-// NewWorkingConditionServiceDeleteWorkingConditionDefault creates a WorkingConditionServiceDeleteWorkingConditionDefault with default headers values
-func NewWorkingConditionServiceDeleteWorkingConditionDefault(code int) *WorkingConditionServiceDeleteWorkingConditionDefault {
-	return &WorkingConditionServiceDeleteWorkingConditionDefault{
-		_statusCode: code,
-	}
-}
-
-/*
-WorkingConditionServiceDeleteWorkingConditionDefault describes a response with status code -1, with default header values.
-
-An unexpected error response.
-*/
-type WorkingConditionServiceDeleteWorkingConditionDefault struct {
-	_statusCode int
-
-	Payload *models.RPCStatus
-}
-
-// IsSuccess returns true when this working condition service delete working condition default response has a 2xx status code
-func (o *WorkingConditionServiceDeleteWorkingConditionDefault) IsSuccess() bool {
-	return o._statusCode/100 == 2
-}
-
-// IsRedirect returns true when this working condition service delete working condition default response has a 3xx status code
-func (o *WorkingConditionServiceDeleteWorkingConditionDefault) IsRedirect() bool {
-	return o._statusCode/100 == 3
-}
-
-// IsClientError returns true when this working condition service delete working condition default response has a 4xx status code
-func (o *WorkingConditionServiceDeleteWorkingConditionDefault) IsClientError() bool {
-	return o._statusCode/100 == 4
-}
-
-// IsServerError returns true when this working condition service delete working condition default response has a 5xx status code
-func (o *WorkingConditionServiceDeleteWorkingConditionDefault) IsServerError() bool {
-	return o._statusCode/100 == 5
-}
-
-// IsCode returns true when this working condition service delete working condition default response a status code equal to that given
-func (o *WorkingConditionServiceDeleteWorkingConditionDefault) IsCode(code int) bool {
-	return o._statusCode == code
-}
-
-// Code gets the status code for the working condition service delete working condition default response
-func (o *WorkingConditionServiceDeleteWorkingConditionDefault) Code() int {
-	return o._statusCode
-}
-
-func (o *WorkingConditionServiceDeleteWorkingConditionDefault) Error() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[DELETE /wfm/lookups/working_conditions/{id}][%d] WorkingConditionService_DeleteWorkingCondition default %s", o._statusCode, payload)
-}
-
-func (o *WorkingConditionServiceDeleteWorkingConditionDefault) String() string {
-	payload, _ := json.Marshal(o.Payload)
-	return fmt.Sprintf("[DELETE /wfm/lookups/working_conditions/{id}][%d] WorkingConditionService_DeleteWorkingCondition default %s", o._statusCode, payload)
-}
-
-func (o *WorkingConditionServiceDeleteWorkingConditionDefault) GetPayload() *models.RPCStatus {
-	return o.Payload
-}
-
-func (o *WorkingConditionServiceDeleteWorkingConditionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.RPCStatus)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
